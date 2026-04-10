@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderSharedShell() {
   const headerTarget = document.querySelector('[data-site-shell="header"]');
   const footerTarget = document.querySelector('[data-site-shell="footer"]');
-  const brandLogo = buildScoutLilyLogo("site-brand__logo scout-lily");
+  const brandLogo = buildScoutLilyLogo(basePath, "site-brand__logo scout-mark-img");
 
   if (headerTarget) {
     const navLinks = primaryNavItems
@@ -147,16 +147,6 @@ function animatePage() {
   });
 }
 
-function buildScoutLilyLogo(className) {
-  return `
-    <svg class="${className}" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-      <path class="scout-lily__petal scout-lily__petal--center" d="M32 7C28.7 11.1 26 16.5 26 22.4C26 27.8 28.2 32.1 32 36.1C35.8 32.1 38 27.8 38 22.4C38 16.5 35.3 11.1 32 7Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-      <path class="scout-lily__petal scout-lily__petal--left" d="M29.1 35.2C21.5 32.4 16.9 27.6 15.2 21.1C13.7 15.6 14.8 10.7 18.2 7.2C19.3 13.3 23.1 18.7 29.3 22.4C24.5 25.1 21.8 28.1 20.7 31.7C23.7 31.7 26.5 32.9 29.1 35.2Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-      <path class="scout-lily__petal scout-lily__petal--right" d="M34.9 35.2C42.5 32.4 47.1 27.6 48.8 21.1C50.3 15.6 49.2 10.7 45.8 7.2C44.7 13.3 40.9 18.7 34.7 22.4C39.5 25.1 42.2 28.1 43.3 31.7C40.3 31.7 37.5 32.9 34.9 35.2Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-      <path class="scout-lily__knot" d="M27 39.8C28.7 40.9 30.4 41.7 32 42C33.6 41.7 35.3 40.9 37 39.8C36.2 42.9 34.7 45.3 32 47C29.3 45.3 27.8 42.9 27 39.8Z" fill="#fdfcf8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-      <path class="scout-lily__stem" d="M32 35.3C30.7 39.3 29 42.6 26.6 45.8C24.4 48.5 21.3 50.7 16.8 52C21.9 52.6 27.2 51.6 32 49C36.8 51.6 42.1 52.6 47.2 52C42.7 50.7 39.6 48.5 37.4 45.8C35 42.6 33.3 39.3 32 35.3Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-      <path class="scout-lily__ribbon scout-lily__ribbon--left" d="M14.1 39.1C18.7 36.4 23.4 36.1 28.1 37.9C24.2 41 20.1 43.1 16.2 44.1C12.9 44.9 10.1 44.7 8 43.7C9.6 41.9 11.6 40.3 14.1 39.1Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-      <path class="scout-lily__ribbon scout-lily__ribbon--right" d="M49.9 39.1C45.3 36.4 40.6 36.1 35.9 37.9C39.8 41 43.9 43.1 47.8 44.1C51.1 44.9 53.9 44.7 56 43.7C54.4 41.9 52.4 40.3 49.9 39.1Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-    </svg>
-  `;
+function buildScoutLilyLogo(currentBasePath, className) {
+  return `<img class="${className}" src="${currentBasePath}assets/icons/brand-giglio.svg" alt="" aria-hidden="true">`;
 }

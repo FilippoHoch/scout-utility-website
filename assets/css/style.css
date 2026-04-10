@@ -113,77 +113,21 @@ ul {
 
 .site-brand__logo {
   width: 36px;
-  height: 36px;
-  color: var(--giallo);
+  height: 38px;
   flex-shrink: 0;
-  overflow: visible;
+  object-fit: contain;
 }
 
-.scout-lily {
-  overflow: visible;
-}
-
-.scout-lily__petal,
-.scout-lily__stem,
-.scout-lily__ribbon,
-.scout-lily__knot {
-  transform-box: fill-box;
+.scout-mark-img {
+  transition: transform 0.26s ease, filter 0.26s ease;
   transform-origin: center;
-  transition: transform 0.28s ease, opacity 0.28s ease, filter 0.28s ease;
+  filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
 }
 
-.scout-lily__petal,
-.scout-lily__stem,
-.scout-lily__ribbon {
-  stroke-dasharray: 1;
-  animation: lily-draw 0.95s ease both;
-}
-
-.scout-lily__petal--left,
-.scout-lily__ribbon--left {
-  transform-origin: 26% 58%;
-}
-
-.scout-lily__petal--right,
-.scout-lily__ribbon--right {
-  transform-origin: 74% 58%;
-}
-
-.site-brand:hover .scout-lily__petal--center,
-.header:hover .scout-lily__petal--center {
-  transform: translateY(-2px) scale(1.03);
-  filter: brightness(1.08);
-}
-
-.site-brand:hover .scout-lily__petal--left,
-.header:hover .scout-lily__petal--left {
-  transform: translate(-1px, -1px) rotate(-5deg);
-}
-
-.site-brand:hover .scout-lily__petal--right,
-.header:hover .scout-lily__petal--right {
-  transform: translate(1px, -1px) rotate(5deg);
-}
-
-.site-brand:hover .scout-lily__ribbon--left,
-.header:hover .scout-lily__ribbon--left {
-  transform: translate(-1px, 1px) rotate(-4deg);
-}
-
-.site-brand:hover .scout-lily__ribbon--right,
-.header:hover .scout-lily__ribbon--right {
-  transform: translate(1px, 1px) rotate(4deg);
-}
-
-@keyframes lily-draw {
-  from {
-    stroke-dashoffset: 1;
-    opacity: 0.45;
-  }
-  to {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
+.site-brand:hover .scout-mark-img,
+.header:hover .scout-mark-img {
+  transform: translateY(-1px) scale(1.06) rotate(-2deg);
+  filter: drop-shadow(0 6px 12px rgba(221, 185, 69, 0.22));
 }
 
 .site-brand__divider {
@@ -432,14 +376,6 @@ main {
   letter-spacing: -0.03em;
 }
 
-.hero-highlights {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.hero-pill,
 .tool-tag {
   display: inline-flex;
   align-items: center;
@@ -452,9 +388,6 @@ main {
   color: var(--verde);
   font-size: 0.76rem;
   font-weight: 600;
-}
-
-.hero-pill svg,
 .tool-tag svg {
   width: 14px;
   height: 14px;
