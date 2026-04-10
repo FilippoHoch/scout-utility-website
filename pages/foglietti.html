@@ -7,6 +7,8 @@
 <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="../assets/js/scout-logo.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
@@ -59,16 +61,22 @@ body {
   pointer-events: none;
 }
 .header-logo {
-  width: 38px;
-  height: 40px;
+  width: 33px;
+  height: 33px;
+  display: block;
   flex-shrink: 0;
   object-fit: contain;
+  overflow: visible;
   transition: transform 0.26s ease, filter 0.26s ease;
   transform-origin: center;
   filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+  will-change: transform, filter;
+}
+.header-logo path {
+  transform-box: fill-box;
+  transform-origin: center;
 }
 .header:hover .header-logo {
-  transform: translateY(-1px) scale(1.06) rotate(-2deg);
   filter: drop-shadow(0 6px 12px rgba(221,185,69,0.22));
 }
 .header-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.15); }
@@ -99,7 +107,7 @@ body {
   min-width: 280px; padding: 10px;
   border: 1.5px solid var(--grigio-chiaro); border-radius: 12px;
   background: var(--bianco); box-shadow: 0 12px 28px rgba(0,0,0,0.14);
-  display: grid; gap: 6px; z-index: 60;
+  display: grid; gap: 6px; z-index: 60; transform-origin: top right;
 }
 .header-menu-item {
   display: inline-flex; align-items: center; gap: 8px;
@@ -134,12 +142,7 @@ body {
   border: 1.5px solid var(--grigio-chiaro);
   box-shadow: 0 2px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
   overflow: hidden;
-  animation: fadeUp 0.4s ease both;
-}
-.card:nth-child(2) { animation-delay: 0.07s; }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  will-change: transform, opacity;
 }
 .card-header {
   padding: 20px 24px 16px;
@@ -161,6 +164,7 @@ body {
   position: relative; border: 2px dashed var(--grigio-chiaro);
   border-radius: 12px; padding: 28px 16px 24px; text-align: center;
   cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  will-change: transform, opacity;
 }
 .dropzone:hover, .dropzone.drag-over {
   border-color: var(--verde-chiaro); background: rgba(78,150,68,0.04);
@@ -187,6 +191,7 @@ body {
   display: none; margin-top: 12px;
   background: #f0f7ee; border: 1.5px solid #b8ddb4; border-radius: 10px;
   padding: 11px 14px; align-items: center; gap: 10px;
+  will-change: transform, opacity;
 }
 .file-info-box.show { display: flex; }
 .file-info-icon { flex-shrink: 0; color: var(--verde); }
@@ -209,6 +214,7 @@ body {
 /* ── PREVIEW ROW ─────────────────────────────────────────── */
 .preview-row {
   display: none; margin-top: 12px; gap: 6px; flex-wrap: wrap; align-items: flex-end;
+  will-change: transform, opacity;
 }
 .preview-row.show { display: flex; }
 .preview-row canvas {
@@ -233,6 +239,7 @@ body {
   margin-top: 18px;
   padding-top: 18px;
   border-top: 1.5px solid var(--sabbia-scura);
+  will-change: transform, opacity;
 }
 .secondary-upload.show { display: block; }
 .secondary-upload-sub {
@@ -382,6 +389,7 @@ body {
   display: none; margin-top: 16px;
   background: var(--sabbia-scura); border: 1.5px solid var(--grigio-chiaro);
   border-radius: 10px; overflow: hidden;
+  will-change: transform, opacity;
 }
 .riepilogo-box.show { display: block; }
 .riepilogo-title {
@@ -413,6 +421,7 @@ body {
   margin-top: 12px; border-radius: 10px; padding: 11px 14px;
   font-size: 0.82rem; line-height: 1.6; display: none; gap: 10px;
   align-items: flex-start;
+  will-change: transform, opacity;
 }
 .status-box.show  { display: flex; }
 .status-box svg   { flex-shrink: 0; margin-top: 1px; }
@@ -427,7 +436,7 @@ body {
 .progress-bar-bg { height: 5px; border-radius: 99px; background: var(--grigio-chiaro); overflow: hidden; }
 .progress-bar-fill {
   height: 100%; border-radius: 99px; background: var(--verde-chiaro);
-  width: 0%; transition: width 0.3s ease;
+  width: 0%;
 }
 .progress-label { font-size: 0.72rem; color: var(--grigio); margin-top: 5px; }
 
@@ -438,6 +447,7 @@ body {
   font-family: 'Inter', sans-serif; font-size: 0.84rem; font-weight: 600;
   cursor: pointer; border: none; transition: all 0.18s;
   text-decoration: none; letter-spacing: -0.01em;
+  will-change: transform, opacity;
 }
 .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 .btn-primary { background: var(--verde); color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
@@ -484,7 +494,7 @@ body {
 
 <!-- HEADER -->
 <header class="header">
-  <img class="header-logo" src="../assets/icons/brand-giglio.svg" alt="" aria-hidden="true">
+  <span class="header-logo" data-scout-logo aria-hidden="true"></span>
   <div class="header-divider"></div>
   <div class="header-text">
     <h1>Foglietti</h1>
@@ -821,6 +831,8 @@ const state = {
   generatedPdfBytes: null,
   generatedBlobUrl: null,
   libraryPromise: null,
+  summarySignature: '',
+  diagramSignature: '',
   front: createSourceState('front'),
   back: createSourceState('back')
 };
@@ -828,9 +840,14 @@ const state = {
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
+  if (window.ScoutLogo && typeof window.ScoutLogo.replaceAll === 'function') {
+    window.ScoutLogo.replaceAll(document);
+  }
+
   setupUpload('front');
   setupUpload('back');
   setupDropdownDismiss();
+  initMotion();
 
   document.querySelectorAll('#tipo-group .opt-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -857,6 +874,215 @@ function init() {
   updateSummary();
   getLibraries().catch((error) => {
     console.error(error);
+  });
+}
+
+function hasMotion() {
+  return Boolean(
+    globalThis.anime &&
+    !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  );
+}
+
+function runMotion(config) {
+  if (!hasMotion() || !config || !config.targets) {
+    return;
+  }
+
+  globalThis.anime.remove(config.targets);
+  globalThis.anime({
+    easing: 'easeOutCubic',
+    duration: 280,
+    ...config
+  });
+}
+
+function pulseMotion(targets, scale = 1.04) {
+  runMotion({
+    targets,
+    scale: [1, scale, 1],
+    duration: 220,
+    easing: 'easeOutBack'
+  });
+}
+
+function bindHoverMotion(selector, activeState) {
+  if (!hasMotion()) {
+    return;
+  }
+
+  document.querySelectorAll(selector).forEach((element) => {
+    element.addEventListener('mouseenter', () => {
+      runMotion({
+        targets: element,
+        scale: activeState.scale ?? 1.02,
+        translateY: activeState.translateY ?? 0,
+        duration: 180,
+        easing: 'easeOutQuad'
+      });
+    });
+
+    element.addEventListener('mouseleave', () => {
+      runMotion({
+        targets: element,
+        scale: 1,
+        translateY: 0,
+        duration: 180,
+        easing: 'easeOutQuad'
+      });
+    });
+  });
+}
+
+function revealElement(element, options = {}) {
+  if (!element || !hasMotion()) {
+    return;
+  }
+
+  const config = {
+    targets: element,
+    opacity: [options.opacityFrom ?? 0, options.opacityTo ?? 1],
+    translateY: [options.translateYFrom ?? 12, options.translateYTo ?? 0],
+    duration: options.duration ?? 280,
+    easing: options.easing ?? 'easeOutCubic'
+  };
+
+  if (options.scaleFrom !== undefined) {
+    config.scale = [options.scaleFrom, options.scaleTo ?? 1];
+  }
+
+  runMotion(config);
+}
+
+function staggerChildren(container, selector, options = {}) {
+  if (!hasMotion() || !container) {
+    return;
+  }
+
+  const items = container.querySelectorAll(selector);
+  if (items.length === 0) {
+    return;
+  }
+
+  globalThis.anime.set(items, {
+    opacity: options.opacityFrom ?? 0,
+    translateY: options.translateYFrom ?? 10,
+    scale: options.scaleFrom ?? 0.98
+  });
+  runMotion({
+    targets: items,
+    opacity: [options.opacityFrom ?? 0, 1],
+    translateY: [options.translateYFrom ?? 10, 0],
+    scale: [options.scaleFrom ?? 0.98, 1],
+    delay: globalThis.anime.stagger(options.stagger ?? 55),
+    duration: options.duration ?? 260
+  });
+}
+
+function initMotion() {
+  if (!hasMotion()) {
+    return;
+  }
+
+  const introCards = ['#card-upload', '#card-config'];
+  const introSections = document.querySelectorAll('.card-header, .config-section, .btn-row');
+
+  globalThis.anime.set('.header', { opacity: 0, translateY: -12 });
+  globalThis.anime.set(introCards, { opacity: 0, translateY: 28, scale: 0.985 });
+  globalThis.anime.set(introSections, { opacity: 0, translateY: 14 });
+
+  globalThis.anime.timeline({ easing: 'easeOutCubic' })
+    .add({
+      targets: '.header',
+      opacity: [0, 1],
+      translateY: [-12, 0],
+      duration: 520
+    })
+    .add({
+      targets: introCards,
+      opacity: [0, 1],
+      translateY: [28, 0],
+      scale: [0.985, 1],
+      duration: 620,
+      delay: globalThis.anime.stagger(100)
+    }, '-=240')
+    .add({
+      targets: introSections,
+      opacity: [0, 1],
+      translateY: [14, 0],
+      duration: 360,
+      delay: globalThis.anime.stagger(45)
+    }, '-=360');
+
+  globalThis.anime({
+    targets: '.card-icon-wrap, .dz-icon',
+    translateY: [0, -3, 0],
+    duration: 3200,
+    delay: globalThis.anime.stagger(180),
+    loop: true,
+    easing: 'easeInOutSine'
+  });
+
+  bindHoverMotion('.card', { scale: 1.006, translateY: -4 });
+  bindHoverMotion('.dropzone', { scale: 1.008, translateY: -2 });
+  bindHoverMotion('.btn, .header-link, .header-summary, .opt-btn', { scale: 1.02, translateY: -1 });
+  bindHoverMotion('.copie-btn, .file-clear-btn', { scale: 1.06, translateY: -1 });
+  bindHeaderLogoMotion();
+
+  document.querySelectorAll('.header-dropdown').forEach((dropdown) => {
+    dropdown.addEventListener('toggle', () => {
+      const menu = dropdown.querySelector('.header-menu');
+      if (!menu || !dropdown.open) {
+        return;
+      }
+      revealElement(menu, { translateYFrom: -10, scaleFrom: 0.985, duration: 220 });
+    });
+  });
+}
+
+function bindHeaderLogoMotion() {
+  const header = document.querySelector('.header');
+  const logo = document.querySelector('.header-logo');
+  if (!header || !logo || !hasMotion()) {
+    return;
+  }
+
+  runMotion({
+    targets: logo,
+    opacity: [0, 1],
+    scale: [0.88, 1],
+    rotate: [-10, 0],
+    duration: 620,
+    easing: 'easeOutBack'
+  });
+
+  if (window.ScoutLogo && typeof window.ScoutLogo.animate === 'function') {
+    window.ScoutLogo.animate(logo, header);
+    return;
+  }
+
+  header.addEventListener('mouseenter', () => {
+    globalThis.anime.remove(logo);
+    runMotion({
+      targets: logo,
+      scale: [1, 1.12, 1.05],
+      rotate: [0, -7, 0],
+      translateY: [0, -2, -1],
+      duration: 560,
+      easing: 'easeOutElastic(1, .6)'
+    });
+  });
+
+  header.addEventListener('mouseleave', () => {
+    globalThis.anime.remove(logo);
+    runMotion({
+      targets: logo,
+      scale: 1,
+      rotate: 0,
+      translateY: 0,
+      duration: 220,
+      easing: 'easeOutQuad'
+    });
   });
 }
 
@@ -1063,6 +1289,8 @@ function showSourceInfo(role) {
 
   infoBox.classList.add('show');
   drop.classList.add('loaded');
+  revealElement(infoBox, { translateYFrom: 10, scaleFrom: 0.985, duration: 240 });
+  pulseMotion(drop.querySelector('.dz-icon'), 1.08);
 }
 
 async function renderSourceThumbnails(role) {
@@ -1111,6 +1339,11 @@ async function renderSourceThumbnails(role) {
 
   if (row.children.length > 0) {
     row.classList.add('show');
+    staggerChildren(row, 'canvas, .preview-more, .preview-word-placeholder', {
+      translateYFrom: 8,
+      scaleFrom: 0.96,
+      stagger: 65
+    });
   }
 }
 
@@ -1128,6 +1361,8 @@ async function buildImagePreviewCanvas(source, thumbHeight) {
 function clearSource(role) {
   resetSourceState(role);
   clearGenerated();
+  state.summarySignature = '';
+  state.diagramSignature = '';
 
   if (role === 'front') {
     document.getElementById('btn-genera').disabled = true;
@@ -1176,6 +1411,7 @@ function setTipo(tipo, isSuggestion = false) {
   document.querySelectorAll('#tipo-group .opt-btn').forEach((button) => {
     button.classList.toggle('selected', button.dataset.value === tipo);
   });
+  pulseMotion(document.querySelector(`#tipo-group .opt-btn[data-value="${tipo}"]`), 1.03);
 
   if (isSuggestion) {
     const label = tipo === 'gia-doppio'
@@ -1194,7 +1430,38 @@ function updateFronteRetroLabel() {
 
 function updateBackUploadVisibility() {
   const wrap = document.getElementById('back-upload-wrap');
-  wrap.classList.toggle('show', document.getElementById('fronte-retro-toggle').checked);
+  const shouldShow = document.getElementById('fronte-retro-toggle').checked;
+  const isVisible = wrap.classList.contains('show');
+
+  if (!hasMotion()) {
+    wrap.classList.toggle('show', shouldShow);
+    return;
+  }
+
+  if (shouldShow) {
+    wrap.classList.add('show');
+    if (!isVisible) {
+      revealElement(wrap, { translateYFrom: 14, scaleFrom: 0.99, duration: 260 });
+    }
+    return;
+  }
+
+  if (!isVisible) {
+    return;
+  }
+
+  runMotion({
+    targets: wrap,
+    opacity: [1, 0],
+    translateY: [0, -8],
+    duration: 180,
+    easing: 'easeInCubic',
+    complete: () => {
+      wrap.classList.remove('show');
+      wrap.style.opacity = '';
+      wrap.style.transform = '';
+    }
+  });
 }
 
 function updateAll() {
@@ -1286,6 +1553,7 @@ function updateSummary() {
 
   if (!plan) {
     box.classList.remove('show');
+    state.summarySignature = '';
     return;
   }
 
@@ -1304,7 +1572,24 @@ function updateSummary() {
   document.getElementById('r-pagine').textContent = `${plan.outputPages} pagine A4 generate`;
   document.getElementById('r-fogli').textContent =
     `${plan.printedSheets} fogli A4 da stampare · ${plan.sheetCopies} copie per ciascun layout`;
+
+  const signature = [
+    plan.tipo,
+    plan.requestedCopies,
+    plan.fronteRetro,
+    plan.retroDescription,
+    plan.outputPages,
+    plan.printedSheets,
+    plan.sheetCopies
+  ].join('|');
+  const shouldAnimate = state.summarySignature !== signature;
+  state.summarySignature = signature;
+
   box.classList.add('show');
+  if (shouldAnimate) {
+    revealElement(box, { translateYFrom: 10, scaleFrom: 0.99, duration: 260 });
+    pulseMotion(document.getElementById('r-fogli-wrap'), 1.025);
+  }
 
   const statusBox = document.getElementById('status-box');
   if (plan.warnings.length > 0) {
@@ -1320,6 +1605,7 @@ function updateDiagram() {
 
   if (!plan || plan.layouts.length === 0) {
     diagram.classList.remove('show');
+    state.diagramSignature = '';
     return;
   }
 
@@ -1340,7 +1626,13 @@ function updateDiagram() {
 
   document.getElementById('back-diagram').style.display = plan.fronteRetro ? 'block' : 'none';
   document.getElementById('diagram-front-label').textContent = plan.fronteRetro ? 'Fronte' : 'Anteprima';
+  const signature = `${plan.tipo}|${plan.fronteRetro}|${firstLayout.front ? firstLayout.front.index : 'none'}|${firstLayout.back ? firstLayout.back.index : 'none'}`;
+  const shouldAnimate = state.diagramSignature !== signature;
+  state.diagramSignature = signature;
   diagram.classList.add('show');
+  if (shouldAnimate) {
+    revealElement(diagram, { translateYFrom: 12, scaleFrom: 0.985, duration: 260 });
+  }
 }
 
 function getThumbnailForPlacement(placement) {
@@ -1435,6 +1727,12 @@ async function runGenera() {
     download.download = buildFileName(plan);
     download.style.display = 'inline-flex';
     document.getElementById('btn-stampa').style.display = 'inline-flex';
+    staggerChildren(document.querySelector('.btn-row'), '#btn-stampa, #btn-scarica', {
+      translateYFrom: 10,
+      scaleFrom: 0.96,
+      stagger: 90,
+      duration: 280
+    });
 
     const note = plan.fronteRetro
       ? ' PDF pronto. Nella finestra di stampa verifica il ribaltamento corretto della tua stampante.'
@@ -1657,6 +1955,7 @@ function showStatus(type, message) {
   const box = document.getElementById('status-box');
   box.className = `status-box show ${type}`;
   box.innerHTML = `${ICONS[type] || ''}<span>${message}</span>`;
+  revealElement(box, { translateYFrom: 8, scaleFrom: 0.985, duration: 220 });
 }
 
 function setStatus(msg) {
@@ -1672,11 +1971,27 @@ function setProgress(pct, label) {
   const lbl  = document.getElementById('progress-label');
   if (pct === 0 && !label) {
     wrap.classList.remove('show');
+    fill.style.width = '0%';
     return;
   }
+  const wasVisible = wrap.classList.contains('show');
   wrap.classList.add('show');
-  fill.style.width = pct + '%';
   lbl.textContent  = label;
+  if (!wasVisible) {
+    revealElement(wrap, { translateYFrom: 8, duration: 220 });
+  }
+
+  if (hasMotion()) {
+    const currentWidth = fill.style.width || '0%';
+    runMotion({
+      targets: fill,
+      width: [currentWidth, `${pct}%`],
+      duration: 260,
+      easing: 'easeOutQuad'
+    });
+  } else {
+    fill.style.width = pct + '%';
+  }
 }
 
 async function getLibraries() {

@@ -7,6 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="../assets/js/scout-logo.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,15 +60,21 @@ body {
   pointer-events: none;
 }
 .header-logo {
-  width: 38px; height: 40px;
+  width: 33px; height: 33px;
+  display: block;
   flex-shrink: 0;
   object-fit: contain;
+  overflow: visible;
   transition: transform 0.26s ease, filter 0.26s ease;
   transform-origin: center;
   filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+  will-change: transform, filter;
+}
+.header-logo path {
+  transform-box: fill-box;
+  transform-origin: center;
 }
 .header:hover .header-logo {
-  transform: translateY(-1px) scale(1.06) rotate(-2deg);
   filter: drop-shadow(0 6px 12px rgba(221,185,69,0.22));
 }
 .header-divider {
@@ -566,7 +573,7 @@ body {
 
 <!-- HEADER -->
 <header class="header">
-  <img class="header-logo" src="../assets/icons/brand-giglio.svg" alt="" aria-hidden="true">
+  <span class="header-logo" data-scout-logo aria-hidden="true"></span>
   <div class="header-divider"></div>
   <div class="header-text">
     <h1>Immagini</h1>
@@ -840,6 +847,10 @@ body {
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
+if (window.ScoutLogo && typeof window.ScoutLogo.replaceAll === 'function') {
+  window.ScoutLogo.replaceAll(document);
+}
+
 // ── Page entrance animation ──────────────────────────────────────────────────
 anime({
   targets: '.header',
@@ -856,6 +867,51 @@ anime({
   delay: anime.stagger(120, { start: 200 }),
   easing: 'easeOutCubic'
 });
+bindHeaderLogoMotion();
+
+function bindHeaderLogoMotion() {
+  const header = document.querySelector('.header');
+  const logo = document.querySelector('.header-logo');
+  if (!header || !logo || typeof anime !== 'function') return;
+
+  anime({
+    targets: logo,
+    opacity: [0, 1],
+    scale: [0.88, 1],
+    rotate: [-10, 0],
+    duration: 620,
+    easing: 'easeOutBack'
+  });
+
+  if (window.ScoutLogo && typeof window.ScoutLogo.animate === 'function') {
+    window.ScoutLogo.animate(logo, header);
+    return;
+  }
+
+  header.addEventListener('mouseenter', () => {
+    anime.remove(logo);
+    anime({
+      targets: logo,
+      scale: [1, 1.12, 1.05],
+      rotate: [0, -7, 0],
+      translateY: [0, -2, -1],
+      duration: 560,
+      easing: 'easeOutElastic(1, .6)'
+    });
+  });
+
+  header.addEventListener('mouseleave', () => {
+    anime.remove(logo);
+    anime({
+      targets: logo,
+      scale: 1,
+      rotate: 0,
+      translateY: 0,
+      duration: 220,
+      easing: 'easeOutQuad'
+    });
+  });
+}
 
 // ── Utilities ────────────────────────────────────────────────────────────────
 const fmtSize = b => b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(2)+' MB';
