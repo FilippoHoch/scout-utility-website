@@ -1,105 +1,1861 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Sezione Foglietti per sistemare e impaginare materiali stampabili.">
-  <title>Foglietti | Scout Utility Website</title>
-  <link rel="icon" href="data:,">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-  <script src="../assets/js/main.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foglietti | Scout Utility Website</title>
+<link rel="icon" type="image/svg+xml" href="../assets/icons/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --verde:        #2d5a27;
+  --verde-mid:    #3d7a35;
+  --verde-chiaro: #4e9644;
+  --verde-scuro:  #182f14;
+  --giallo:       #ddb945;
+  --sabbia:       #f4efe6;
+  --sabbia-scura: #ece6da;
+  --bianco:       #fdfcf8;
+  --grigio:       #6b7280;
+  --grigio-chiaro:#e5e0d8;
+  --rosso:        #c0392b;
+  --rosso-chiaro: #fce8e6;
+  --testo:        #1e1e1e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--sabbia);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+  color: var(--testo);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+.header {
+  background: var(--verde-scuro);
+  padding: 0 40px;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 3px solid var(--giallo);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  overflow: visible;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+.header-logo { width: 36px; height: 36px; color: var(--giallo); flex-shrink: 0; }
+.header-logo { overflow: visible; }
+.scout-lily { overflow: visible; }
+.scout-lily__petal,
+.scout-lily__stem,
+.scout-lily__ribbon,
+.scout-lily__knot {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.28s ease, opacity 0.28s ease, filter 0.28s ease;
+}
+.scout-lily__petal,
+.scout-lily__stem,
+.scout-lily__ribbon {
+  stroke-dasharray: 1;
+  animation: lily-draw 0.95s ease both;
+}
+.scout-lily__petal--left, .scout-lily__ribbon--left { transform-origin: 26% 58%; }
+.scout-lily__petal--right, .scout-lily__ribbon--right { transform-origin: 74% 58%; }
+.header:hover .scout-lily__petal--center { transform: translateY(-2px) scale(1.03); filter: brightness(1.08); }
+.header:hover .scout-lily__petal--left { transform: translate(-1px, -1px) rotate(-5deg); }
+.header:hover .scout-lily__petal--right { transform: translate(1px, -1px) rotate(5deg); }
+.header:hover .scout-lily__ribbon--left { transform: translate(-1px, 1px) rotate(-4deg); }
+.header:hover .scout-lily__ribbon--right { transform: translate(1px, 1px) rotate(4deg); }
+@keyframes lily-draw {
+  from { stroke-dashoffset: 1; opacity: 0.45; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+.header-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.15); }
+.header-text h1 {
+  font-family: 'Playfair Display', serif;
+  color: #fff; font-size: 1.25rem; letter-spacing: 0.01em; line-height: 1.2;
+}
+.header-text p { color: rgba(255,255,255,0.45); font-size: 0.75rem; margin-top: 2px; }
+.header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.header-link, .header-summary {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 12px; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px; background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.84); text-decoration: none;
+  font-size: 0.78rem; cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+.header-link:hover, .header-summary:hover,
+.header-dropdown[open] .header-summary {
+  background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.18); color: #fff;
+}
+.header-link svg, .header-summary svg, .header-menu-item svg { width: 14px; height: 14px; }
+.header-dropdown { position: relative; }
+.header-dropdown summary { list-style: none; }
+.header-dropdown summary::-webkit-details-marker { display: none; }
+.header-menu {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  min-width: 280px; padding: 10px;
+  border: 1.5px solid var(--grigio-chiaro); border-radius: 12px;
+  background: var(--bianco); box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+  display: grid; gap: 6px; z-index: 60;
+}
+.header-menu-item {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 12px; border-radius: 10px;
+  color: var(--grigio); font-size: 0.82rem;
+  text-decoration: none; transition: background 0.15s;
+}
+.header-menu-item:not(.disabled):hover { background: #f0f7ee; color: var(--verde); }
+.header-menu-item.disabled { background: #f7f4ee; opacity: 0.72; cursor: not-allowed; }
+
+/* ── LAYOUT ─────────────────────────────────────────────── */
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 20px 72px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media(max-width: 860px) {
+  .header { padding: 12px 20px; }
+  .header-actions { width: 100%; justify-content: flex-end; }
+}
+@media(max-width: 680px) {
+  .container { grid-template-columns: 1fr; padding: 24px 16px 48px; }
+}
+
+/* ── CARD ────────────────────────────────────────────────── */
+.card {
+  background: var(--bianco);
+  border-radius: 16px;
+  border: 1.5px solid var(--grigio-chiaro);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  overflow: hidden;
+  animation: fadeUp 0.4s ease both;
+}
+.card:nth-child(2) { animation-delay: 0.07s; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1.5px solid var(--sabbia-scura);
+  display: flex; align-items: center; gap: 14px;
+}
+.card-icon-wrap {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.card-icon-wrap.foglio { background: #fff8ee; color: #b06000; }
+.card-icon-wrap.config { background: #eef6ff; color: #0066cc; }
+.card-title    { font-size: 1rem; font-weight: 600; letter-spacing: -0.01em; }
+.card-subtitle { font-size: 0.73rem; color: var(--grigio); margin-top: 2px; }
+.card-body { padding: 20px 24px 24px; }
+
+/* ── DROPZONE ────────────────────────────────────────────── */
+.dropzone {
+  position: relative; border: 2px dashed var(--grigio-chiaro);
+  border-radius: 12px; padding: 28px 16px 24px; text-align: center;
+  cursor: pointer; transition: border-color 0.2s, background 0.2s;
+}
+.dropzone:hover, .dropzone.drag-over {
+  border-color: var(--verde-chiaro); background: rgba(78,150,68,0.04);
+}
+.dropzone.drag-over { border-style: solid; }
+.dropzone.loaded { border-color: #b8ddb4; background: #f4faf4; border-style: solid; }
+.dropzone input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.dz-icon {
+  width: 44px; height: 44px; margin: 0 auto 12px;
+  border-radius: 12px; background: var(--sabbia-scura);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--grigio); transition: background 0.2s, color 0.2s;
+}
+.dropzone:hover .dz-icon, .dropzone.drag-over .dz-icon { background: rgba(78,150,68,0.12); color: var(--verde-chiaro); }
+.dropzone.loaded .dz-icon { background: #d4edcf; color: var(--verde); }
+.dz-title { font-size: 0.875rem; font-weight: 500; margin-bottom: 3px; }
+.dz-title span { color: var(--verde-mid); text-decoration: underline; text-underline-offset: 2px; }
+.dz-sub   { font-size: 0.72rem; color: var(--grigio); }
+
+/* ── FILE INFO BOX ───────────────────────────────────────── */
+.file-info-box {
+  display: none; margin-top: 12px;
+  background: #f0f7ee; border: 1.5px solid #b8ddb4; border-radius: 10px;
+  padding: 11px 14px; align-items: center; gap: 10px;
+}
+.file-info-box.show { display: flex; }
+.file-info-icon { flex-shrink: 0; color: var(--verde); }
+.file-info-icon svg { width: 18px; height: 18px; }
+.file-info-text { flex: 1; min-width: 0; }
+.file-info-name {
+  font-size: 0.84rem; font-weight: 600; color: var(--testo);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.file-info-desc { font-size: 0.72rem; color: var(--verde); margin-top: 2px; }
+.file-clear-btn {
+  flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+  border: none; background: rgba(0,0,0,0.08); cursor: pointer;
+  color: var(--grigio); font-size: 1rem; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.file-clear-btn:hover { background: var(--rosso-chiaro); color: var(--rosso); }
+
+/* ── PREVIEW ROW ─────────────────────────────────────────── */
+.preview-row {
+  display: none; margin-top: 12px; gap: 6px; flex-wrap: wrap; align-items: flex-end;
+}
+.preview-row.show { display: flex; }
+.preview-row canvas {
+  border: 1px solid var(--grigio-chiaro); border-radius: 6px;
+  height: 70px; width: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.preview-more {
+  height: 70px; padding: 0 12px; display: flex; align-items: center;
+  background: var(--sabbia-scura); border-radius: 6px;
+  font-size: 0.75rem; color: var(--grigio); font-weight: 500;
+}
+.preview-word-placeholder {
+  height: 70px; width: 54px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+  background: #eef6ff; border: 1px solid #bfdbfe; border-radius: 6px;
+  color: #0066cc; font-size: 0.7rem; font-weight: 500;
+}
+
+/* ── RETRO OPZIONALE ────────────────────────────────────── */
+.secondary-upload {
+  display: none;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1.5px solid var(--sabbia-scura);
+}
+.secondary-upload.show { display: block; }
+.secondary-upload-sub {
+  font-size: 0.75rem;
+  color: var(--grigio);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+/* ── LAYOUT PREVIEW DIAGRAM ──────────────────────────────── */
+.layout-diagram {
+  margin-top: 14px; display: none;
+}
+.layout-diagram.show { display: block; }
+.layout-diagram-label {
+  font-size: 0.7rem; font-weight: 600; color: var(--grigio);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
+}
+.a4-sheet {
+  width: 100%; max-width: 280px;
+  aspect-ratio: 297 / 210;
+  border: 1.5px solid var(--grigio-chiaro); border-radius: 6px;
+  background: white; display: flex; overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  position: relative;
+}
+.a5-slot {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 0.62rem; color: var(--grigio); position: relative;
+  overflow: hidden;
+}
+.a5-slot:first-child { border-right: 1px dashed #c0bdb6; }
+.a5-slot canvas {
+  position: absolute; inset: 3px;
+  width: calc(100% - 6px); height: calc(100% - 6px);
+  object-fit: contain; border-radius: 2px;
+}
+.a5-slot-label {
+  position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  font-size: 0.58rem; color: #bbb; white-space: nowrap; pointer-events: none;
+}
+.sheet-back { margin-top: 6px; opacity: 0.6; }
+.sheet-label {
+  font-size: 0.65rem; color: var(--grigio);
+  text-align: center; margin-bottom: 3px; font-weight: 500;
+}
+
+/* ── SECTION LABEL ───────────────────────────────────────── */
+.config-label {
+  font-size: 0.72rem; font-weight: 700; color: #4a3a20;
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
+}
+.config-section { margin-bottom: 18px; }
+
+/* ── TIPO OPTIONS ────────────────────────────────────────── */
+.opt-group { display: grid; gap: 8px; }
+.opt-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px; border-radius: 10px;
+  border: 1.5px solid var(--grigio-chiaro);
+  background: white; cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+  text-align: left; font-family: 'Inter', sans-serif;
+}
+.opt-btn:hover { border-color: #b8ddb4; background: #f8fff7; }
+.opt-btn.selected {
+  border-color: var(--verde-mid); background: #f0f7ee;
+  box-shadow: 0 0 0 3px rgba(61,122,53,0.1);
+}
+.opt-radio {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--grigio-chiaro);
+  flex-shrink: 0; margin-top: 2px; position: relative;
+  transition: border-color 0.18s;
+}
+.opt-btn.selected .opt-radio { border-color: var(--verde-mid); border-width: 5px; }
+.opt-title { font-size: 0.84rem; font-weight: 600; line-height: 1.2; }
+.opt-sub   { font-size: 0.72rem; color: var(--grigio); margin-top: 2px; }
+
+/* ── TOGGLE SWITCH ───────────────────────────────────────── */
+.toggle-row { display: flex; align-items: center; gap: 12px; }
+.toggle-switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0; background: var(--grigio-chiaro);
+  border-radius: 22px; cursor: pointer; transition: background 0.2s;
+}
+.toggle-slider::before {
+  content: ''; position: absolute;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: white; top: 3px; left: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.toggle-switch input:checked + .toggle-slider { background: var(--verde-mid); }
+.toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+.toggle-label { font-size: 0.84rem; font-weight: 600; }
+.toggle-sub   { font-size: 0.72rem; color: var(--grigio); margin-top: 1px; }
+
+/* ── COPIE STEPPER ───────────────────────────────────────── */
+.copie-row { display: flex; align-items: center; gap: 8px; }
+.copie-btn {
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1.5px solid var(--grigio-chiaro); background: white;
+  cursor: pointer; font-size: 1.1rem; font-family: 'Inter', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; color: var(--testo); font-weight: 600;
+}
+.copie-btn:hover { border-color: var(--verde-mid); color: var(--verde); background: #f0f7ee; }
+.copie-btn:active { transform: scale(0.93); }
+#copie-input {
+  width: 70px; text-align: center; padding: 6px 8px;
+  border: 1.5px solid var(--grigio-chiaro); border-radius: 8px;
+  font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600;
+  color: var(--testo); background: white; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -moz-appearance: textfield;
+}
+#copie-input:focus { border-color: var(--verde-mid); box-shadow: 0 0 0 3px rgba(61,122,53,0.12); }
+#copie-input::-webkit-outer-spin-button,
+#copie-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.copie-unit { font-size: 0.82rem; color: var(--grigio); font-weight: 500; }
+
+/* ── CHECKBOXES ──────────────────────────────────────────── */
+.check-row {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; user-select: none;
+}
+.check-row input[type=checkbox] { display: none; }
+.check-box {
+  width: 18px; height: 18px; border-radius: 5px;
+  border: 1.5px solid var(--grigio-chiaro); background: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: border-color 0.15s, background 0.15s;
+}
+.check-row input:checked + .check-box { border-color: var(--verde-mid); background: var(--verde-mid); }
+.check-row input:checked + .check-box::after {
+  content: ''; width: 5px; height: 9px;
+  border: 2px solid white; border-top: none; border-left: none;
+  transform: rotate(45deg) translateY(-1px);
+}
+.check-label { font-size: 0.82rem; }
+.check-sub    { font-size: 0.7rem; color: var(--grigio); margin-top: 1px; }
+
+/* ── RIEPILOGO BOX ───────────────────────────────────────── */
+.riepilogo-box {
+  display: none; margin-top: 16px;
+  background: var(--sabbia-scura); border: 1.5px solid var(--grigio-chiaro);
+  border-radius: 10px; overflow: hidden;
+}
+.riepilogo-box.show { display: block; }
+.riepilogo-title {
+  padding: 9px 14px; background: rgba(0,0,0,0.03);
+  border-bottom: 1px solid var(--grigio-chiaro);
+  font-size: 0.7rem; font-weight: 700; color: #4a3a20;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  display: flex; align-items: center; gap: 6px;
+}
+.riepilogo-title svg { color: var(--verde-mid); }
+.riepilogo-row {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 7px 14px; border-bottom: 1px solid rgba(0,0,0,0.05);
+  font-size: 0.8rem;
+}
+.riepilogo-row:last-child { border-bottom: none; }
+.riepilogo-key { color: var(--grigio); flex-shrink: 0; min-width: 130px; }
+.riepilogo-val { color: var(--testo); font-weight: 600; }
+.riepilogo-highlight {
+  padding: 10px 14px; background: rgba(45,90,39,0.06);
+  border-top: 1px solid rgba(45,90,39,0.12);
+  font-size: 0.82rem; color: var(--verde); font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
+.riepilogo-highlight svg { flex-shrink: 0; }
+
+/* ── STATUS BOX ──────────────────────────────────────────── */
+.status-box {
+  margin-top: 12px; border-radius: 10px; padding: 11px 14px;
+  font-size: 0.82rem; line-height: 1.6; display: none; gap: 10px;
+  align-items: flex-start;
+}
+.status-box.show  { display: flex; }
+.status-box svg   { flex-shrink: 0; margin-top: 1px; }
+.status-box.ok    { background: #f0faf0; border: 1.5px solid #86efac; color: #166534; }
+.status-box.err   { background: var(--rosso-chiaro); border: 1.5px solid #fca5a5; color: #991b1b; }
+.status-box.warn  { background: #fffbeb; border: 1.5px solid #fcd34d; color: #92400e; }
+.status-box.info  { background: #eff6ff; border: 1.5px solid #93c5fd; color: #1e40af; }
+
+/* ── PROGRESS ────────────────────────────────────────────── */
+.progress-wrap { display: none; margin-top: 12px; }
+.progress-wrap.show { display: block; }
+.progress-bar-bg { height: 5px; border-radius: 99px; background: var(--grigio-chiaro); overflow: hidden; }
+.progress-bar-fill {
+  height: 100%; border-radius: 99px; background: var(--verde-chiaro);
+  width: 0%; transition: width 0.3s ease;
+}
+.progress-label { font-size: 0.72rem; color: var(--grigio); margin-top: 5px; }
+
+/* ── BUTTONS ─────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 8px;
+  font-family: 'Inter', sans-serif; font-size: 0.84rem; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.18s;
+  text-decoration: none; letter-spacing: -0.01em;
+}
+.btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.btn-primary { background: var(--verde); color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.btn-primary:hover    { background: var(--verde-mid); box-shadow: 0 2px 8px rgba(45,90,39,0.3); transform: translateY(-1px); }
+.btn-primary:disabled { background: #bbb; cursor: not-allowed; box-shadow: none; transform: none; }
+.btn-secondary { background: transparent; border: 1.5px solid var(--verde); color: var(--verde); }
+.btn-secondary:hover  { background: rgba(45,90,39,0.06); transform: translateY(-1px); }
+.btn-download  { background: var(--giallo); color: #2a1a00; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+.btn-download:hover   { background: #c9a83a; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(180,140,0,0.3); }
+.btn-row { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* ── SPINNER ─────────────────────────────────────────────── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  width: 15px; height: 15px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.4); border-top-color: white;
+  animation: spin 0.7s linear infinite; flex-shrink: 0;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.footer {
+  text-align: center; font-size: 0.72rem; color: #bbb; padding: 24px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.footer svg { color: #ccc; }
+
+/* ── WORD RENDER TARGET ──────────────────────────────────── */
+#word-render {
+  position: fixed; left: -9999px; top: 0;
+  width: 555px; /* ~A5 at 96dpi ≈ 555×787, close enough */
+  min-height: 787px; padding: 36px;
+  font-family: Arial, sans-serif; font-size: 12px;
+  line-height: 1.5; background: white; color: #111;
+  box-sizing: border-box; overflow: hidden;
+}
+#word-render h1,#word-render h2,#word-render h3 { margin: 0.5em 0; }
+#word-render p  { margin: 0.4em 0; }
+#word-render ul,#word-render ol { padding-left: 1.5em; margin: 0.4em 0; }
+#word-render table { border-collapse: collapse; width: 100%; }
+#word-render td,#word-render th { border: 1px solid #ccc; padding: 4px 6px; font-size: 11px; }
+</style>
 </head>
-<body data-base-path="../" data-current-page="foglietti">
-  <div data-site-shell="header"></div>
+<body>
 
-  <main>
-    <section class="section section--hero">
-      <div class="container">
-        <article class="hero-card reveal-card">
-          <p class="eyebrow">Sezione in sviluppo</p>
-          <div class="hero-title-row">
-            <span class="icon-badge icon-badge--blue">
-              <i data-lucide="files"></i>
-            </span>
-            <div>
-              <h1>Foglietti</h1>
-              <p class="hero-lead">
-                Pagina dedicata alla sistemazione e impaginazione di foglietti, schede brevi e materiali
-                piccoli da distribuire in forma ordinata.
-              </p>
-            </div>
-          </div>
-
-          <div class="inline-pills">
-            <span class="target-pill"><i data-lucide="file-text"></i>Contenuti brevi</span>
-            <span class="target-pill"><i data-lucide="layout-panel-top"></i>Layout di stampa</span>
-            <span class="target-pill"><i data-lucide="scissors-line-dashed"></i>Preparazione distribuzione</span>
-          </div>
-        </article>
+<!-- HEADER -->
+<header class="header">
+  <svg class="header-logo scout-lily" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <path class="scout-lily__petal scout-lily__petal--center" d="M32 7C28.7 11.1 26 16.5 26 22.4C26 27.8 28.2 32.1 32 36.1C35.8 32.1 38 27.8 38 22.4C38 16.5 35.3 11.1 32 7Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="scout-lily__petal scout-lily__petal--left" d="M29.1 35.2C21.5 32.4 16.9 27.6 15.2 21.1C13.7 15.6 14.8 10.7 18.2 7.2C19.3 13.3 23.1 18.7 29.3 22.4C24.5 25.1 21.8 28.1 20.7 31.7C23.7 31.7 26.5 32.9 29.1 35.2Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="scout-lily__petal scout-lily__petal--right" d="M34.9 35.2C42.5 32.4 47.1 27.6 48.8 21.1C50.3 15.6 49.2 10.7 45.8 7.2C44.7 13.3 40.9 18.7 34.7 22.4C39.5 25.1 42.2 28.1 43.3 31.7C40.3 31.7 37.5 32.9 34.9 35.2Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="scout-lily__knot" d="M27 39.8C28.7 40.9 30.4 41.7 32 42C33.6 41.7 35.3 40.9 37 39.8C36.2 42.9 34.7 45.3 32 47C29.3 45.3 27.8 42.9 27 39.8Z" fill="#fdfcf8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="scout-lily__stem" d="M32 35.3C30.7 39.3 29 42.6 26.6 45.8C24.4 48.5 21.3 50.7 16.8 52C21.9 52.6 27.2 51.6 32 49C36.8 51.6 42.1 52.6 47.2 52C42.7 50.7 39.6 48.5 37.4 45.8C35 42.6 33.3 39.3 32 35.3Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="scout-lily__ribbon scout-lily__ribbon--left" d="M14.1 39.1C18.7 36.4 23.4 36.1 28.1 37.9C24.2 41 20.1 43.1 16.2 44.1C12.9 44.9 10.1 44.7 8 43.7C9.6 41.9 11.6 40.3 14.1 39.1Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="scout-lily__ribbon scout-lily__ribbon--right" d="M49.9 39.1C45.3 36.4 40.6 36.1 35.9 37.9C39.8 41 43.9 43.1 47.8 44.1C51.1 44.9 53.9 44.7 56 43.7C54.4 41.9 52.4 40.3 49.9 39.1Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="header-divider"></div>
+  <div class="header-text">
+    <h1>Foglietti</h1>
+    <p>Stampa A5 su A4</p>
+  </div>
+  <div class="header-actions">
+    <a class="header-link" href="../index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      Home
+    </a>
+    <details class="header-dropdown">
+      <summary class="header-summary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        Altri strumenti
+      </summary>
+      <div class="header-menu">
+        <a class="header-menu-item" href="immagini.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Immagini
+        </a>
+        <span class="header-menu-item disabled">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M8 8h8v8H8z"/></svg>
+          Menu
+        </span>
+        <span class="header-menu-item disabled">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Programmi
+        </span>
+        <span class="header-menu-item disabled">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Libretti
+        </span>
       </div>
-    </section>
+    </details>
+  </div>
+</header>
 
-    <section class="section section--tight">
-      <div class="container placeholder-layout">
-        <article class="panel reveal-card">
-          <div class="panel__header">
-            <span class="icon-badge icon-badge--gold">
-              <i data-lucide="target"></i>
-            </span>
-            <div>
-              <h2 class="panel-title">Scopo della sezione</h2>
-              <p>Uniformare foglietti e materiali brevi da stampare.</p>
-            </div>
-          </div>
-          <p>
-            Qui potranno trovare posto strumenti per sistemare schede di gioco, canti, preghiere,
-            comunicazioni o testi brevi da consegnare con un'impaginazione più ordinata.
-          </p>
-        </article>
+<!-- MAIN -->
+<div class="container">
 
-        <article class="panel reveal-card">
-          <div class="panel__header">
-            <span class="icon-badge icon-badge--green">
-              <i data-lucide="list-checks"></i>
-            </span>
-            <div>
-              <h2 class="panel-title">Funzionalità previste</h2>
-              <p>Strumenti vicini per logica all'area immagini.</p>
-            </div>
-          </div>
-          <ul class="feature-list">
-            <li>Layout rapidi per foglietti in diversi formati</li>
-            <li>Impaginazione di contenuti ripetuti o multipli</li>
-            <li>Controllo margini e spaziatura per la stampa</li>
-            <li>Preparazione PDF ordinata per la distribuzione</li>
-          </ul>
-        </article>
-
-        <article class="panel panel--notice reveal-card">
-          <div class="panel__header">
-            <span class="icon-badge icon-badge--brown">
-              <i data-lucide="hammer"></i>
-            </span>
-            <div>
-              <h2 class="panel-title">Stato attuale</h2>
-              <p>Placeholder solido, già coerente con il resto del progetto.</p>
-            </div>
-          </div>
-          <p class="status-inline">In sviluppo</p>
-          <p>
-            La pagina è pronta come contenitore iniziale e potrà evolvere naturalmente a partire dalle
-            logiche di impaginazione che oggi sono già presenti nella sezione immagini.
-          </p>
-        </article>
+  <!-- ── CARD UPLOAD ──────────────────────────────────────── -->
+  <div class="card" id="card-upload">
+    <div class="card-header">
+      <div class="card-icon-wrap foglio">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/>
+        </svg>
       </div>
-    </section>
-  </main>
+      <div>
+        <div class="card-title">Carica il foglietto</div>
+        <div class="card-subtitle">PDF, immagine o documento Word</div>
+      </div>
+    </div>
+    <div class="card-body">
 
-  <div data-site-shell="footer"></div>
+      <!-- Dropzone -->
+      <div class="dropzone" id="upload-drop">
+          <input type="file" id="upload-input" accept=".pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.docx">
+        <div class="dz-icon" id="dz-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        </div>
+        <div class="dz-title"><span>Clicca</span> o trascina il file</div>
+        <div class="dz-sub">PDF &middot; JPG / PNG / WebP / BMP / GIF &middot; Word (.docx)</div>
+      </div>
+
+      <!-- File info -->
+      <div class="file-info-box" id="file-info-box">
+        <div class="file-info-icon" id="file-info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div class="file-info-text">
+          <div class="file-info-name" id="file-info-name">—</div>
+          <div class="file-info-desc" id="file-info-desc">—</div>
+        </div>
+        <button class="file-clear-btn" id="file-clear-btn" title="Rimuovi file">&times;</button>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="preview-row" id="preview-row"></div>
+
+      <!-- Layout diagram -->
+      <div class="layout-diagram" id="layout-diagram">
+        <div class="layout-diagram-label">Anteprima foglio A4 stampato</div>
+        <div class="sheet-label" id="diagram-front-label">Fronte</div>
+        <div class="a4-sheet" id="a4-front">
+          <div class="a5-slot" id="slot-left">
+            <canvas id="thumb-left"></canvas>
+            <span class="a5-slot-label">A5 sinistro</span>
+          </div>
+          <div class="a5-slot" id="slot-right">
+            <canvas id="thumb-right"></canvas>
+            <span class="a5-slot-label">A5 destro</span>
+          </div>
+        </div>
+        <div id="back-diagram" style="display:none">
+          <div class="sheet-label" style="margin-top:8px">Retro</div>
+          <div class="a4-sheet sheet-back" id="a4-back">
+            <div class="a5-slot">
+              <canvas id="thumb-back-left"></canvas>
+              <span class="a5-slot-label">A5 sinistro</span>
+            </div>
+            <div class="a5-slot">
+              <canvas id="thumb-back-right"></canvas>
+              <span class="a5-slot-label">A5 destro</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Retro opzionale -->
+      <div class="secondary-upload" id="back-upload-wrap">
+        <div class="config-label">Retro opzionale</div>
+        <p class="secondary-upload-sub">
+          Carica un secondo file se il retro è diverso dal fronte. Se lo lasci vuoto, il tool userà
+          il retro dallo stesso file quando possibile, oppure lo stesso contenuto del fronte.
+        </p>
+
+        <div class="dropzone" id="back-upload-drop">
+          <input type="file" id="back-upload-input" accept=".pdf,.jpg,.jpeg,.png,.webp,.bmp,.gif,.docx">
+          <div class="dz-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+          </div>
+          <div class="dz-title"><span>Clicca</span> o trascina il file del retro</div>
+          <div class="dz-sub">Opzionale · PDF · JPG / PNG / WebP / BMP / GIF · Word (.docx)</div>
+        </div>
+
+        <div class="file-info-box" id="back-file-info-box">
+          <div class="file-info-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="file-info-text">
+            <div class="file-info-name" id="back-file-info-name">—</div>
+            <div class="file-info-desc" id="back-file-info-desc">—</div>
+          </div>
+          <button class="file-clear-btn" id="back-file-clear-btn" title="Rimuovi file retro">&times;</button>
+        </div>
+
+        <div class="preview-row" id="back-preview-row"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CARD CONFIG ──────────────────────────────────────── -->
+  <div class="card" id="card-config">
+    <div class="card-header">
+      <div class="card-icon-wrap config">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07M8.46 8.46a5 5 0 0 0 0 7.07"/>
+        </svg>
+      </div>
+      <div>
+        <div class="card-title">Configurazione stampa</div>
+        <div class="card-subtitle">Tipo, copie e modalità</div>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <!-- Tipo foglietto -->
+      <div class="config-section">
+        <div class="config-label">Tipo di foglietto</div>
+        <div class="opt-group" id="tipo-group">
+          <button class="opt-btn selected" data-value="singolo" id="opt-singolo">
+            <div class="opt-radio"></div>
+            <div>
+              <div class="opt-title">Singolo A5</div>
+              <div class="opt-sub">Ogni pagina è un foglietto da duplicare su A4</div>
+            </div>
+          </button>
+          <button class="opt-btn" data-value="gia-doppio" id="opt-gia-doppio">
+            <div class="opt-radio"></div>
+            <div>
+              <div class="opt-title">Già doppio (A5+A5 su A4)</div>
+              <div class="opt-sub">File già predisposto — usalo solo per le copie</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Fronte/retro -->
+      <div class="config-section">
+        <div class="config-label">Modalità di stampa</div>
+        <div class="toggle-row">
+          <label class="toggle-switch">
+            <input type="checkbox" id="fronte-retro-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+          <div>
+            <div class="toggle-label">Fronte / retro</div>
+            <div class="toggle-sub" id="fronte-retro-sub">Stampa su una sola facciata del foglio A4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Numero copie -->
+      <div class="config-section">
+        <div class="config-label">Numero di copie</div>
+        <div class="copie-row">
+          <button class="copie-btn" id="copie-minus">−</button>
+          <input type="number" id="copie-input" value="20" min="1" max="999">
+          <button class="copie-btn" id="copie-plus">+</button>
+          <span class="copie-unit">foglietti</span>
+        </div>
+      </div>
+
+      <!-- Opzioni extra -->
+      <div class="config-section">
+        <div class="config-label">Opzioni</div>
+        <label class="check-row">
+          <input type="checkbox" id="linea-taglio-check" checked>
+          <div class="check-box"></div>
+          <div>
+            <div class="check-label">Linea di taglio</div>
+            <div class="check-sub">Aggiunge una linea grigia al centro del foglio</div>
+          </div>
+        </label>
+      </div>
+
+      <!-- Riepilogo -->
+      <div class="riepilogo-box" id="riepilogo-box">
+        <div class="riepilogo-title">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Riepilogo
+        </div>
+        <div class="riepilogo-row">
+          <span class="riepilogo-key">Tipo</span>
+          <span class="riepilogo-val" id="r-tipo">—</span>
+        </div>
+        <div class="riepilogo-row">
+          <span class="riepilogo-key">Copie richieste</span>
+          <span class="riepilogo-val" id="r-copie">—</span>
+        </div>
+        <div class="riepilogo-row">
+          <span class="riepilogo-key">Modalità stampa</span>
+          <span class="riepilogo-val" id="r-modo">—</span>
+        </div>
+        <div class="riepilogo-row">
+          <span class="riepilogo-key">Retro</span>
+          <span class="riepilogo-val" id="r-retro">—</span>
+        </div>
+        <div class="riepilogo-row">
+          <span class="riepilogo-key">Pagine PDF output</span>
+          <span class="riepilogo-val" id="r-pagine">—</span>
+        </div>
+        <div class="riepilogo-highlight" id="r-fogli-wrap">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          <span id="r-fogli">—</span>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="status-box" id="status-box"></div>
+
+      <!-- Progress -->
+      <div class="progress-wrap" id="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+        <div class="progress-label" id="progress-label">Elaborazione…</div>
+      </div>
+
+      <!-- Actions -->
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-genera" disabled>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+          Genera PDF
+        </button>
+        <button class="btn btn-secondary" id="btn-stampa" style="display:none">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Stampa
+        </button>
+        <a class="btn btn-download" id="btn-scarica" style="display:none" download="foglietti.pdf">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Scarica PDF
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <svg width="14" height="14" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <path d="M32 7C28.7 11.1 26 16.5 26 22.4C26 27.8 28.2 32.1 32 36.1C35.8 32.1 38 27.8 38 22.4C38 16.5 35.3 11.1 32 7Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M29.1 35.2C21.5 32.4 16.9 27.6 15.2 21.1C13.7 15.6 14.8 10.7 18.2 7.2C19.3 13.3 23.1 18.7 29.3 22.4C24.5 25.1 21.8 28.1 20.7 31.7C23.7 31.7 26.5 32.9 29.1 35.2Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34.9 35.2C42.5 32.4 47.1 27.6 48.8 21.1C50.3 15.6 49.2 10.7 45.8 7.2C44.7 13.3 40.9 18.7 34.7 22.4C39.5 25.1 42.2 28.1 43.3 31.7C40.3 31.7 37.5 32.9 34.9 35.2Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M32 35.3C30.7 39.3 29 42.6 26.6 45.8C24.4 48.5 21.3 50.7 16.8 52C21.9 52.6 27.2 51.6 32 49C36.8 51.6 42.1 52.6 47.2 52C42.7 50.7 39.6 48.5 37.4 45.8C35 42.6 33.3 39.3 32 35.3Z" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  Scout Utility Website &mdash; Foglietti
+</footer>
+
+<!-- Hidden Word render target -->
+<div id="word-render"></div>
+
+<script>
+const ICONS = {
+  ok:   '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>',
+  err:  '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+  warn: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  info: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+};
+
+const A4W = 841.89;
+const A4H = 595.28;
+const A5W = A4W / 2;
+
+const FILE_UI = {
+  front: {
+    drop: 'upload-drop',
+    input: 'upload-input',
+    infoBox: 'file-info-box',
+    infoName: 'file-info-name',
+    infoDesc: 'file-info-desc',
+    clear: 'file-clear-btn',
+    previewRow: 'preview-row',
+    roleLabel: 'fronte'
+  },
+  back: {
+    drop: 'back-upload-drop',
+    input: 'back-upload-input',
+    infoBox: 'back-file-info-box',
+    infoName: 'back-file-info-name',
+    infoDesc: 'back-file-info-desc',
+    clear: 'back-file-clear-btn',
+    previewRow: 'back-preview-row',
+    roleLabel: 'retro'
+  }
+};
+
+const state = {
+  currentTipo: 'singolo',
+  generatedPdfBytes: null,
+  generatedBlobUrl: null,
+  libraryPromise: null,
+  front: createSourceState('front'),
+  back: createSourceState('back')
+};
+
+document.addEventListener('DOMContentLoaded', init);
+
+function init() {
+  setupUpload('front');
+  setupUpload('back');
+  setupDropdownDismiss();
+
+  document.querySelectorAll('#tipo-group .opt-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      setTipo(btn.dataset.value);
+      updateAll();
+    });
+  });
+
+  document.getElementById('fronte-retro-toggle').addEventListener('change', () => {
+    updateFronteRetroLabel();
+    updateBackUploadVisibility();
+    updateAll();
+  });
+
+  document.getElementById('copie-minus').addEventListener('click', () => adjustCopie(-1));
+  document.getElementById('copie-plus').addEventListener('click', () => adjustCopie(1));
+  document.getElementById('copie-input').addEventListener('input', updateAll);
+  document.getElementById('linea-taglio-check').addEventListener('change', updateSummary);
+  document.getElementById('btn-genera').addEventListener('click', runGenera);
+  document.getElementById('btn-stampa').addEventListener('click', stampaDiretta);
+
+  updateFronteRetroLabel();
+  updateBackUploadVisibility();
+  updateSummary();
+  getLibraries().catch((error) => {
+    console.error(error);
+  });
+}
+
+function createSourceState(role) {
+  return {
+    role,
+    file: null,
+    fileType: null,
+    fileBytes: null,
+    pdfJsDoc: null,
+    pageCount: 0,
+    imgNaturalW: 0,
+    imgNaturalH: 0,
+    wordCanvasBytes: null,
+    autoDetectedTipo: null,
+    sourceThumbnails: []
+  };
+}
+
+function setupUpload(role) {
+  const ui = FILE_UI[role];
+  const drop = document.getElementById(ui.drop);
+  const input = document.getElementById(ui.input);
+  const clear = document.getElementById(ui.clear);
+
+  input.addEventListener('change', (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      handleFile(role, file);
+    }
+  });
+
+  drop.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    drop.classList.add('drag-over');
+  });
+
+  drop.addEventListener('dragleave', () => {
+    drop.classList.remove('drag-over');
+  });
+
+  drop.addEventListener('drop', (event) => {
+    event.preventDefault();
+    drop.classList.remove('drag-over');
+    const file = event.dataTransfer.files && event.dataTransfer.files[0];
+    if (file) {
+      handleFile(role, file);
+    }
+  });
+
+  clear.addEventListener('click', () => {
+    clearSource(role);
+  });
+}
+
+function setupDropdownDismiss() {
+  document.addEventListener('click', (event) => {
+    document.querySelectorAll('.header-dropdown[open]').forEach((dropdown) => {
+      if (!dropdown.contains(event.target)) {
+        dropdown.removeAttribute('open');
+      }
+    });
+  });
+}
+
+function adjustCopie(delta) {
+  const input = document.getElementById('copie-input');
+  const value = Math.max(1, Math.min(999, (parseInt(input.value, 10) || 1) + delta));
+  input.value = value;
+  updateAll();
+}
+
+function getCopie() {
+  return Math.max(1, Math.min(999, parseInt(document.getElementById('copie-input').value, 10) || 1));
+}
+
+async function handleFile(role, file) {
+  const classification = classifyFile(file);
+  if (classification.error) {
+    showStatus('err', classification.error);
+    return;
+  }
+
+  clearGenerated();
+  setProgress(8, `Analisi file ${FILE_UI[role].roleLabel}…`);
+  setStatus('');
+
+  try {
+    await getLibraries();
+    const source = state[role];
+    resetSourceState(role);
+    source.file = file;
+    source.fileType = classification.type;
+    source.fileBytes = new Uint8Array(await file.arrayBuffer());
+
+    if (source.fileType === 'pdf') {
+      await analyzePdfSource(source);
+    } else if (source.fileType === 'image') {
+      await analyzeImageSource(source);
+    } else {
+      await analyzeWordSource(source);
+    }
+
+    showSourceInfo(role);
+    await renderSourceThumbnails(role);
+
+    if (role === 'front' && source.autoDetectedTipo) {
+      setTipo(source.autoDetectedTipo, true);
+    }
+
+    updateAll();
+    setProgress(0, '');
+
+    if (role === 'back') {
+      showStatus('info', 'Retro caricato. Verrà usato solo se la stampa fronte/retro è attiva.');
+    }
+  } catch (error) {
+    console.error(error);
+    clearSource(role);
+    showStatus('err', `Errore analisi file ${FILE_UI[role].roleLabel}: ${error.message}`);
+    setProgress(0, '');
+  }
+}
+
+function classifyFile(file) {
+  const lowerName = file.name.toLowerCase();
+  if (lowerName.endsWith('.pdf')) {
+    return { type: 'pdf' };
+  }
+  if (/\.(jpg|jpeg|png|webp|bmp|gif)$/i.test(lowerName)) {
+    return { type: 'image' };
+  }
+  if (lowerName.endsWith('.docx')) {
+    return { type: 'word' };
+  }
+  if (lowerName.endsWith('.doc')) {
+    return { error: 'Il formato Word .doc non è supportato direttamente dal browser. Salvalo come .docx o PDF.' };
+  }
+  return { error: 'Formato non supportato. Usa PDF, JPG/PNG/WebP/BMP/GIF o Word (.docx).' };
+}
+
+async function analyzePdfSource(source) {
+  const bytes = source.fileBytes.slice();
+  source.pdfJsDoc = await globalThis.pdfjsLib.getDocument({ data: bytes }).promise;
+  source.pageCount = source.pdfJsDoc.numPages;
+
+  const firstPage = await source.pdfJsDoc.getPage(1);
+  const viewport = firstPage.getViewport({ scale: 1 });
+  source.autoDetectedTipo = viewport.width / viewport.height > 1.25 ? 'gia-doppio' : 'singolo';
+}
+
+async function analyzeImageSource(source) {
+  const image = await loadImageFromBytes(source.fileBytes);
+  source.pageCount = 1;
+  source.imgNaturalW = image.naturalWidth;
+  source.imgNaturalH = image.naturalHeight;
+  source.autoDetectedTipo = image.naturalWidth / image.naturalHeight > 1.25 ? 'gia-doppio' : 'singolo';
+}
+
+async function analyzeWordSource(source) {
+  const result = await globalThis.mammoth.convertToHtml({ arrayBuffer: source.fileBytes });
+  const wordRender = document.getElementById('word-render');
+  wordRender.innerHTML = result.value || '<p></p>';
+
+  await new Promise((resolve) => setTimeout(resolve, 80));
+
+  const canvas = await globalThis.html2canvas(wordRender, {
+    scale: 2,
+    backgroundColor: '#ffffff',
+    useCORS: true,
+    width: wordRender.offsetWidth,
+    height: wordRender.scrollHeight
+  });
+
+  source.wordCanvasBytes = dataUrlToUint8Array(canvas.toDataURL('image/png'));
+  source.imgNaturalW = canvas.width;
+  source.imgNaturalH = canvas.height;
+  source.pageCount = 1;
+  source.autoDetectedTipo = 'singolo';
+  wordRender.innerHTML = '';
+}
+
+function showSourceInfo(role) {
+  const source = state[role];
+  const ui = FILE_UI[role];
+  const sizeKB = (source.file.size / 1024).toFixed(0);
+  const infoBox = document.getElementById(ui.infoBox);
+  const nameEl = document.getElementById(ui.infoName);
+  const descEl = document.getElementById(ui.infoDesc);
+  const drop = document.getElementById(ui.drop);
+
+  nameEl.textContent = source.file.name;
+
+  if (source.fileType === 'pdf') {
+    const pagesText = source.pageCount === 1 ? '1 pagina' : `${source.pageCount} pagine`;
+    const detectedText = source.autoDetectedTipo === 'gia-doppio' ? 'già doppio' : 'singolo';
+    descEl.textContent = `PDF · ${pagesText} · ${sizeKB} KB · rilevato: ${detectedText}`;
+  } else if (source.fileType === 'image') {
+    const ext = source.file.name.split('.').pop().toUpperCase();
+    descEl.textContent = `${ext} · ${source.imgNaturalW}×${source.imgNaturalH}px · ${sizeKB} KB`;
+  } else {
+    descEl.textContent = `Word .docx · ${sizeKB} KB · convertito in immagine`;
+  }
+
+  infoBox.classList.add('show');
+  drop.classList.add('loaded');
+}
+
+async function renderSourceThumbnails(role) {
+  const source = state[role];
+  const row = document.getElementById(FILE_UI[role].previewRow);
+  row.innerHTML = '';
+  row.classList.remove('show');
+  source.sourceThumbnails = [];
+
+  if (!source.file) {
+    return;
+  }
+
+  const thumbHeight = 75;
+
+  if (source.fileType === 'pdf') {
+    const maxShow = Math.min(source.pageCount, 4);
+    for (let index = 1; index <= maxShow; index += 1) {
+      const page = await source.pdfJsDoc.getPage(index);
+      const viewport = page.getViewport({ scale: 1 });
+      const scale = thumbHeight / viewport.height;
+      const scaledViewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      canvas.width = scaledViewport.width;
+      canvas.height = scaledViewport.height;
+      await page.render({
+        canvasContext: canvas.getContext('2d'),
+        viewport: scaledViewport
+      }).promise;
+      canvas.title = `Pagina ${index}`;
+      source.sourceThumbnails.push(canvas);
+      row.appendChild(canvas);
+    }
+
+    if (source.pageCount > maxShow) {
+      const more = document.createElement('div');
+      more.className = 'preview-more';
+      more.textContent = `+${source.pageCount - maxShow} pag.`;
+      row.appendChild(more);
+    }
+  } else {
+    const canvas = await buildImagePreviewCanvas(source, thumbHeight);
+    source.sourceThumbnails.push(canvas);
+    row.appendChild(canvas);
+  }
+
+  if (row.children.length > 0) {
+    row.classList.add('show');
+  }
+}
+
+async function buildImagePreviewCanvas(source, thumbHeight) {
+  const bytes = source.fileType === 'word' ? source.wordCanvasBytes : source.fileBytes;
+  const image = await loadImageFromBytes(bytes);
+  const scale = thumbHeight / image.naturalHeight;
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+  canvas.height = thumbHeight;
+  canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+  return canvas;
+}
+
+function clearSource(role) {
+  resetSourceState(role);
+  clearGenerated();
+
+  if (role === 'front') {
+    document.getElementById('btn-genera').disabled = true;
+    document.getElementById('layout-diagram').classList.remove('show');
+    document.getElementById('riepilogo-box').classList.remove('show');
+  }
+
+  updateAll();
+}
+
+function resetSourceState(role) {
+  const ui = FILE_UI[role];
+  const source = state[role];
+  source.file = null;
+  source.fileType = null;
+  source.fileBytes = null;
+  source.pdfJsDoc = null;
+  source.pageCount = 0;
+  source.imgNaturalW = 0;
+  source.imgNaturalH = 0;
+  source.wordCanvasBytes = null;
+  source.autoDetectedTipo = null;
+  source.sourceThumbnails = [];
+
+  document.getElementById(ui.input).value = '';
+  document.getElementById(ui.drop).classList.remove('loaded', 'drag-over');
+  document.getElementById(ui.infoBox).classList.remove('show');
+  document.getElementById(ui.previewRow).innerHTML = '';
+  document.getElementById(ui.previewRow).classList.remove('show');
+}
+
+function clearGenerated() {
+  state.generatedPdfBytes = null;
+  if (state.generatedBlobUrl) {
+    URL.revokeObjectURL(state.generatedBlobUrl);
+    state.generatedBlobUrl = null;
+  }
+  document.getElementById('btn-stampa').style.display = 'none';
+  const download = document.getElementById('btn-scarica');
+  download.style.display = 'none';
+  download.removeAttribute('href');
+}
+
+function setTipo(tipo, isSuggestion = false) {
+  state.currentTipo = tipo;
+  document.querySelectorAll('#tipo-group .opt-btn').forEach((button) => {
+    button.classList.toggle('selected', button.dataset.value === tipo);
+  });
+
+  if (isSuggestion) {
+    const label = tipo === 'gia-doppio'
+      ? 'Rilevato automaticamente un file già predisposto con due A5 affiancati.'
+      : 'Rilevato automaticamente un foglietto singolo A5.';
+    showStatus('info', `${label} Puoi cambiare il tipo se serve.`);
+  }
+}
+
+function updateFronteRetroLabel() {
+  const text = document.getElementById('fronte-retro-toggle').checked
+    ? 'Stampa su entrambe le facciate del foglio A4'
+    : 'Stampa su una sola facciata del foglio A4';
+  document.getElementById('fronte-retro-sub').textContent = text;
+}
+
+function updateBackUploadVisibility() {
+  const wrap = document.getElementById('back-upload-wrap');
+  wrap.classList.toggle('show', document.getElementById('fronte-retro-toggle').checked);
+}
+
+function updateAll() {
+  updateSummary();
+  updateDiagram();
+  updateGenerateButtonState();
+}
+
+function updateGenerateButtonState() {
+  document.getElementById('btn-genera').disabled = !state.front.file;
+}
+
+function buildImpositionPlan() {
+  if (!state.front.file) {
+    return null;
+  }
+
+  const requestedCopies = getCopie();
+  const fronteRetro = document.getElementById('fronte-retro-toggle').checked;
+  const frontPages = Math.max(1, state.front.pageCount || 1);
+  const backPages = state.back.file ? Math.max(1, state.back.pageCount || 1) : 0;
+  const layouts = [];
+  const warnings = [];
+  let retroDescription = 'Non usato';
+
+  if (!fronteRetro) {
+    for (let index = 0; index < frontPages; index += 1) {
+      layouts.push({
+        front: { source: 'front', index },
+        back: null
+      });
+    }
+  } else if (state.back.file) {
+    const count = Math.max(frontPages, backPages);
+    retroDescription = 'Retro separato da file dedicato';
+
+    if (frontPages !== backPages) {
+      warnings.push(`Il fronte ha ${frontPages} pagine e il retro ${backPages}. Le pagine mancanti resteranno bianche.`);
+    }
+
+    for (let index = 0; index < count; index += 1) {
+      layouts.push({
+        front: index < frontPages ? { source: 'front', index } : null,
+        back: index < backPages ? { source: 'back', index } : null
+      });
+    }
+  } else if (frontPages === 1) {
+    retroDescription = 'Retro uguale al fronte';
+    layouts.push({
+      front: { source: 'front', index: 0 },
+      back: { source: 'front', index: 0 }
+    });
+  } else {
+    retroDescription = 'Retro preso dalla pagina successiva dello stesso file';
+    for (let index = 0; index < frontPages; index += 2) {
+      layouts.push({
+        front: { source: 'front', index },
+        back: index + 1 < frontPages ? { source: 'front', index: index + 1 } : null
+      });
+    }
+
+    if (frontPages % 2 !== 0) {
+      warnings.push('L’ultima pagina non ha un retro corrispondente e resterà bianca.');
+    }
+  }
+
+  const sheetCopies = Math.ceil(requestedCopies / 2);
+  const printedSheets = layouts.length * sheetCopies;
+  const outputPages = printedSheets * (fronteRetro ? 2 : 1);
+
+  return {
+    requestedCopies,
+    fronteRetro,
+    tipo: state.currentTipo,
+    frontPages,
+    backPages,
+    retroDescription,
+    layouts,
+    sheetCopies,
+    printedSheets,
+    outputPages,
+    warnings
+  };
+}
+
+function updateSummary() {
+  const plan = buildImpositionPlan();
+  const box = document.getElementById('riepilogo-box');
+
+  if (!plan) {
+    box.classList.remove('show');
+    return;
+  }
+
+  const tipoLabel = plan.tipo === 'gia-doppio'
+    ? `Già doppio A4 · ${plan.frontPages} ${plan.frontPages === 1 ? 'pagina' : 'pagine'} sorgente`
+    : `Singolo A5 · ${plan.frontPages} ${plan.frontPages === 1 ? 'pagina' : 'pagine'} sorgente`;
+
+  const modeLabel = plan.fronteRetro
+    ? 'Fronte/retro su foglio A4 orizzontale'
+    : 'Solo fronte su foglio A4 orizzontale';
+
+  document.getElementById('r-tipo').textContent = tipoLabel;
+  document.getElementById('r-copie').textContent = `${plan.requestedCopies} foglietti finali`;
+  document.getElementById('r-modo').textContent = modeLabel;
+  document.getElementById('r-retro').textContent = plan.retroDescription;
+  document.getElementById('r-pagine').textContent = `${plan.outputPages} pagine A4 generate`;
+  document.getElementById('r-fogli').textContent =
+    `${plan.printedSheets} fogli A4 da stampare · ${plan.sheetCopies} copie per ciascun layout`;
+  box.classList.add('show');
+
+  const statusBox = document.getElementById('status-box');
+  if (plan.warnings.length > 0) {
+    showStatus('warn', plan.warnings.join(' '));
+  } else if (statusBox.classList.contains('warn')) {
+    setStatus('');
+  }
+}
+
+function updateDiagram() {
+  const plan = buildImpositionPlan();
+  const diagram = document.getElementById('layout-diagram');
+
+  if (!plan || plan.layouts.length === 0) {
+    diagram.classList.remove('show');
+    return;
+  }
+
+  const firstLayout = plan.layouts[0];
+  const isSingolo = plan.tipo === 'singolo';
+  const frontPreview = getThumbnailForPlacement(firstLayout.front);
+  const backPreview = getThumbnailForPlacement(firstLayout.back);
+
+  if (isSingolo) {
+    fillSlotCanvas('thumb-left', frontPreview);
+    fillSlotCanvas('thumb-right', frontPreview);
+    fillSlotCanvas('thumb-back-left', backPreview);
+    fillSlotCanvas('thumb-back-right', backPreview);
+  } else {
+    fillSheetHalves('thumb-left', 'thumb-right', frontPreview);
+    fillSheetHalves('thumb-back-left', 'thumb-back-right', backPreview);
+  }
+
+  document.getElementById('back-diagram').style.display = plan.fronteRetro ? 'block' : 'none';
+  document.getElementById('diagram-front-label').textContent = plan.fronteRetro ? 'Fronte' : 'Anteprima';
+  diagram.classList.add('show');
+}
+
+function getThumbnailForPlacement(placement) {
+  if (!placement) {
+    return null;
+  }
+
+  const source = state[placement.source];
+  if (!source.sourceThumbnails.length) {
+    return null;
+  }
+
+  return source.sourceThumbnails[Math.min(placement.index, source.sourceThumbnails.length - 1)];
+}
+
+function fillSlotCanvas(canvasId, sourceCanvas) {
+  const canvas = document.getElementById(canvasId);
+  const slot = canvas.parentElement;
+  const width = slot.offsetWidth || 130;
+  const height = slot.offsetHeight || 95;
+  canvas.width = width;
+  canvas.height = height;
+
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, width, height);
+
+  if (!sourceCanvas) {
+    return;
+  }
+
+  const fit = fitToBox(sourceCanvas.width, sourceCanvas.height, width - 6, height - 6);
+  context.drawImage(sourceCanvas, fit.x + 3, fit.y + 3, fit.w, fit.h);
+}
+
+function fillSheetHalves(leftId, rightId, sourceCanvas) {
+  fillHalfCanvas(leftId, sourceCanvas, 0);
+  fillHalfCanvas(rightId, sourceCanvas, 0.5);
+}
+
+function fillHalfCanvas(canvasId, sourceCanvas, startRatio) {
+  const canvas = document.getElementById(canvasId);
+  const slot = canvas.parentElement;
+  const width = slot.offsetWidth || 130;
+  const height = slot.offsetHeight || 95;
+  canvas.width = width;
+  canvas.height = height;
+
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, width, height);
+
+  if (!sourceCanvas) {
+    return;
+  }
+
+  const sourceX = sourceCanvas.width * startRatio;
+  const sourceWidth = sourceCanvas.width / 2;
+  const fit = fitToBox(sourceWidth, sourceCanvas.height, width - 6, height - 6);
+  context.drawImage(
+    sourceCanvas,
+    sourceX,
+    0,
+    sourceWidth,
+    sourceCanvas.height,
+    fit.x + 3,
+    fit.y + 3,
+    fit.w,
+    fit.h
+  );
+}
+
+async function runGenera() {
+  const plan = buildImpositionPlan();
+  if (!plan) {
+    return;
+  }
+
+  clearGenerated();
+  setStatus('');
+  setProgress(5, 'Preparazione librerie…');
+  setGenerateButtonBusy(true);
+
+  try {
+    await getLibraries();
+    state.generatedPdfBytes = await generatePdf(plan);
+    const blob = new Blob([state.generatedPdfBytes], { type: 'application/pdf' });
+    state.generatedBlobUrl = URL.createObjectURL(blob);
+
+    const download = document.getElementById('btn-scarica');
+    download.href = state.generatedBlobUrl;
+    download.download = buildFileName(plan);
+    download.style.display = 'inline-flex';
+    document.getElementById('btn-stampa').style.display = 'inline-flex';
+
+    const note = plan.fronteRetro
+      ? ' PDF pronto. Nella finestra di stampa verifica il ribaltamento corretto della tua stampante.'
+      : '';
+    showStatus('ok', `PDF generato con successo. ${(state.generatedPdfBytes.byteLength / 1024).toFixed(0)} KB.${note}`);
+    setProgress(100, 'Completato');
+  } catch (error) {
+    console.error(error);
+    showStatus('err', `Errore durante la generazione: ${error.message}`);
+    setProgress(0, '');
+  } finally {
+    setGenerateButtonBusy(false);
+  }
+}
+
+function setGenerateButtonBusy(isBusy) {
+  const button = document.getElementById('btn-genera');
+  button.disabled = isBusy || !state.front.file;
+  button.innerHTML = isBusy
+    ? '<div class="spinner"></div> Generazione…'
+    : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg> Genera PDF';
+}
+
+async function generatePdf(plan) {
+  if (!globalThis.PDFLib || !globalThis.PDFLib.PDFDocument) {
+    throw new Error('PDF-Lib non disponibile. Controlla la connessione e ricarica la pagina.');
+  }
+
+  const { PDFDocument, rgb } = globalThis.PDFLib;
+  const outputDoc = await PDFDocument.create();
+  const resources = {
+    front: await prepareResource(outputDoc, state.front),
+    back: state.back.file ? await prepareResource(outputDoc, state.back) : null
+  };
+  const addCutLine = document.getElementById('linea-taglio-check').checked;
+  const totalPagesToDraw = plan.layouts.length * plan.sheetCopies * (plan.fronteRetro ? 2 : 1);
+  let drawnPages = 0;
+
+  for (let copyIndex = 0; copyIndex < plan.sheetCopies; copyIndex += 1) {
+    for (let layoutIndex = 0; layoutIndex < plan.layouts.length; layoutIndex += 1) {
+      const layout = plan.layouts[layoutIndex];
+      const frontPage = outputDoc.addPage([A4W, A4H]);
+
+      if (plan.tipo === 'singolo') {
+        drawDuplicatedA5(frontPage, resources, layout.front);
+      } else {
+        drawFullA4(frontPage, resources, layout.front);
+      }
+
+      if (addCutLine) {
+        drawCutLine(frontPage, rgb);
+      }
+
+      drawnPages += 1;
+      setProgress(
+        20 + Math.round((72 * drawnPages) / totalPagesToDraw),
+        `Composizione pagina ${drawnPages} di ${totalPagesToDraw}…`
+      );
+
+      if (plan.fronteRetro) {
+        const backPage = outputDoc.addPage([A4W, A4H]);
+
+        if (plan.tipo === 'singolo') {
+          drawDuplicatedA5(backPage, resources, layout.back);
+        } else {
+          drawFullA4(backPage, resources, layout.back);
+        }
+
+        if (addCutLine) {
+          drawCutLine(backPage, rgb);
+        }
+
+        drawnPages += 1;
+        setProgress(
+          20 + Math.round((72 * drawnPages) / totalPagesToDraw),
+          `Composizione pagina ${drawnPages} di ${totalPagesToDraw}…`
+        );
+      }
+    }
+  }
+
+  setProgress(96, 'Salvataggio PDF…');
+  return outputDoc.save();
+}
+
+async function prepareResource(outputDoc, source) {
+  if (!source.file) {
+    return null;
+  }
+
+  if (source.fileType === 'pdf') {
+    const indices = Array.from({ length: source.pageCount }, (_, index) => index);
+    const pages = await outputDoc.embedPdf(source.fileBytes.slice(0), indices);
+    return { kind: 'pdf', pages };
+  }
+
+  const imageBytes = await normalizeImageBytes(source);
+  if (looksLikePng(imageBytes)) {
+    return { kind: 'image', image: await outputDoc.embedPng(imageBytes) };
+  }
+  if (looksLikeJpg(imageBytes)) {
+    return { kind: 'image', image: await outputDoc.embedJpg(imageBytes) };
+  }
+
+  const pngBytes = await convertToPng(imageBytes);
+  return { kind: 'image', image: await outputDoc.embedPng(pngBytes) };
+}
+
+async function normalizeImageBytes(source) {
+  if (source.fileType === 'word') {
+    return source.wordCanvasBytes;
+  }
+
+  const bytes = toUint8Array(source.fileBytes);
+  if (looksLikePng(bytes) || looksLikeJpg(bytes)) {
+    return bytes;
+  }
+  return convertToPng(bytes);
+}
+
+function drawDuplicatedA5(page, resources, placement) {
+  if (!placement) {
+    return;
+  }
+
+  drawPlacementInBox(page, resources, placement, 0, 0, A5W, A4H);
+  drawPlacementInBox(page, resources, placement, A5W, 0, A5W, A4H);
+}
+
+function drawFullA4(page, resources, placement) {
+  if (!placement) {
+    return;
+  }
+
+  drawPlacementInBox(page, resources, placement, 0, 0, A4W, A4H);
+}
+
+function drawPlacementInBox(page, resources, placement, boxX, boxY, boxW, boxH) {
+  const resource = resources[placement.source];
+  if (!resource) {
+    return;
+  }
+
+  if (resource.kind === 'pdf') {
+    const embeddedPage = resource.pages[placement.index];
+    if (!embeddedPage) {
+      return;
+    }
+    const fit = fitToBox(embeddedPage.width, embeddedPage.height, boxW, boxH);
+    page.drawPage(embeddedPage, {
+      x: boxX + fit.x,
+      y: boxY + fit.y,
+      width: fit.w,
+      height: fit.h
+    });
+    return;
+  }
+
+  const image = resource.image;
+  const fit = fitToBox(image.width, image.height, boxW, boxH);
+  page.drawImage(image, {
+    x: boxX + fit.x,
+    y: boxY + fit.y,
+    width: fit.w,
+    height: fit.h
+  });
+}
+
+function drawCutLine(page, rgb) {
+  page.drawLine({
+    start: { x: A5W, y: 0 },
+    end: { x: A5W, y: A4H },
+    thickness: 0.5,
+    color: rgb(0.72, 0.72, 0.72),
+    dashArray: [4, 4]
+  });
+}
+
+function fitToBox(sourceWidth, sourceHeight, boxWidth, boxHeight) {
+  const scale = Math.min(boxWidth / sourceWidth, boxHeight / sourceHeight);
+  const width = sourceWidth * scale;
+  const height = sourceHeight * scale;
+  return {
+    x: (boxWidth - width) / 2,
+    y: (boxHeight - height) / 2,
+    w: width,
+    h: height
+  };
+}
+
+function buildFileName(plan) {
+  const base = (state.front.file && state.front.file.name.replace(/\.[^.]+$/, '')) || 'foglietti';
+  const safeBase = base
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/gi, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase() || 'foglietti';
+  const tipo = plan.tipo === 'gia-doppio' ? 'doppio' : 'singolo';
+  const modo = plan.fronteRetro ? 'fronte-retro' : 'solo-fronte';
+  return `${safeBase}_${tipo}_${modo}_${plan.requestedCopies}foglietti.pdf`;
+}
+
+function stampaDiretta() {
+  if (!state.generatedBlobUrl) {
+    return;
+  }
+
+  const printWindow = window.open(state.generatedBlobUrl, '_blank');
+  if (!printWindow) {
+    return;
+  }
+
+  printWindow.addEventListener('load', () => {
+    setTimeout(() => printWindow.print(), 400);
+  });
+}
+
+function showStatus(type, message) {
+  const box = document.getElementById('status-box');
+  box.className = `status-box show ${type}`;
+  box.innerHTML = `${ICONS[type] || ''}<span>${message}</span>`;
+}
+
+function setStatus(msg) {
+  if (!msg) {
+    document.getElementById('status-box').className = 'status-box';
+    document.getElementById('status-box').innerHTML = '';
+  }
+}
+
+function setProgress(pct, label) {
+  const wrap = document.getElementById('progress-wrap');
+  const fill = document.getElementById('progress-fill');
+  const lbl  = document.getElementById('progress-label');
+  if (pct === 0 && !label) {
+    wrap.classList.remove('show');
+    return;
+  }
+  wrap.classList.add('show');
+  fill.style.width = pct + '%';
+  lbl.textContent  = label;
+}
+
+async function getLibraries() {
+  if (!state.libraryPromise) {
+    state.libraryPromise = ensureLibraries().catch((error) => {
+      state.libraryPromise = null;
+      throw error;
+    });
+  }
+  return state.libraryPromise;
+}
+
+async function ensureLibraries() {
+  await ensureScriptLoaded(
+    () => Boolean(globalThis.PDFLib && globalThis.PDFLib.PDFDocument),
+    [
+      'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js',
+      'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js'
+    ],
+    'PDF-Lib'
+  );
+
+  await ensureScriptLoaded(
+    () => Boolean(globalThis.pdfjsLib && globalThis.pdfjsLib.getDocument),
+    [
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+      'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
+      'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js'
+    ],
+    'PDF.js'
+  );
+
+  globalThis.pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  await ensureScriptLoaded(
+    () => Boolean(globalThis.mammoth && globalThis.mammoth.convertToHtml),
+    [
+      'https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js',
+      'https://unpkg.com/mammoth@1.8.0/mammoth.browser.min.js'
+    ],
+    'Mammoth'
+  );
+
+  await ensureScriptLoaded(
+    () => Boolean(globalThis.html2canvas),
+    [
+      'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+      'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
+      'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js'
+    ],
+    'html2canvas'
+  );
+}
+
+async function ensureScriptLoaded(checkFn, urls, label) {
+  if (checkFn()) {
+    return;
+  }
+
+  let lastError = null;
+  for (const url of urls) {
+    try {
+      await loadScript(url);
+      if (checkFn()) {
+        return;
+      }
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw new Error(`Impossibile caricare ${label}.`);
+}
+
+function loadScript(url) {
+  const existing = document.querySelector(`script[data-runtime-src="${url}"]`);
+  if (existing) {
+    if (existing.dataset.loaded === 'true') {
+      return Promise.resolve();
+    }
+    return new Promise((resolve, reject) => {
+      existing.addEventListener('load', () => resolve(), { once: true });
+      existing.addEventListener('error', () => reject(new Error(`Errore caricamento ${url}`)), { once: true });
+    });
+  }
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = url;
+    script.async = true;
+    script.dataset.runtimeSrc = url;
+    script.addEventListener('load', () => {
+      script.dataset.loaded = 'true';
+      resolve();
+    }, { once: true });
+    script.addEventListener('error', () => {
+      reject(new Error(`Errore caricamento ${url}`));
+    }, { once: true });
+    document.head.appendChild(script);
+  });
+}
+
+function toUint8Array(value) {
+  if (value instanceof Uint8Array) {
+    return value;
+  }
+  return new Uint8Array(value);
+}
+
+function looksLikePng(bytes) {
+  const buffer = toUint8Array(bytes);
+  return buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47;
+}
+
+function looksLikeJpg(bytes) {
+  const buffer = toUint8Array(bytes);
+  return buffer[0] === 0xff && buffer[1] === 0xd8;
+}
+
+async function convertToPng(bytes) {
+  const image = await loadImageFromBytes(bytes);
+  const canvas = document.createElement('canvas');
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
+  canvas.getContext('2d').drawImage(image, 0, 0);
+  return dataUrlToUint8Array(canvas.toDataURL('image/png'));
+}
+
+function loadImageFromBytes(bytes) {
+  return new Promise((resolve, reject) => {
+    const blob = new Blob([bytes]);
+    const url = URL.createObjectURL(blob);
+    const image = new Image();
+    image.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve(image);
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Immagine non leggibile.'));
+    };
+    image.src = url;
+  });
+}
+
+function dataUrlToUint8Array(dataUrl) {
+  const base64 = dataUrl.split(',')[1];
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  return bytes;
+}
+</script>
 </body>
 </html>
