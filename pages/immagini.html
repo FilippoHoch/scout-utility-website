@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Utility per sistemare immagini, ordinarle e preparare pagine stampabili o PDF.">
+  <title>Sistemazione immagini | Scout Utility Website</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/main.js" defer></script>
+</head>
+<body data-base-path="../" data-current-page="immagini" data-page="immagini">
+  <div data-site-shell="header"></div>
+
+  <main>
+    <section class="page-hero page-hero--compact">
+      <div class="container">
+        <p class="eyebrow">Utility attiva</p>
+        <h1>Sistemazione immagini</h1>
+        <p class="hero-lead">
+          Carica una o più immagini, mettile nell'ordine giusto e prepara pagine pulite da stampare
+          o salvare in PDF con le opzioni base di impaginazione.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--tight tool-section">
+      <div class="container tool-layout">
+        <aside class="tool-sidebar">
+          <div class="panel controls-panel">
+            <div class="panel__header">
+              <h2>Impostazioni</h2>
+              <p>Configura rapidamente il layout prima della stampa.</p>
+            </div>
+
+            <label class="field">
+              <span class="field__label">Titolo / progetto</span>
+              <input id="project-title" class="input" type="text" placeholder="Es. Uscita di reparto - aprile">
+            </label>
+
+            <div class="field-group">
+              <label class="field">
+                <span class="field__label">Immagini per pagina</span>
+                <select id="images-per-page" class="input">
+                  <option value="1">1 immagine</option>
+                  <option value="2" selected>2 immagini</option>
+                  <option value="4">4 immagini</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span class="field__label">Margini</span>
+                <select id="page-margin" class="input">
+                  <option value="stretto">Stretti</option>
+                  <option value="medio" selected>Medi</option>
+                  <option value="largo">Larghi</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field">
+              <span class="field__label">Orientamento pagina</span>
+              <select id="page-orientation" class="input">
+                <option value="portrait" selected>Verticale</option>
+                <option value="landscape">Orizzontale</option>
+              </select>
+            </label>
+
+            <label class="upload-dropzone" id="upload-dropzone" for="image-input">
+              <input id="image-input" type="file" accept="image/*" multiple hidden>
+              <span class="upload-dropzone__title">Carica immagini</span>
+              <span class="upload-dropzone__text">
+                Seleziona dal computer oppure trascina qui i file immagine.
+              </span>
+            </label>
+
+            <div class="button-row">
+              <button id="print-button" class="button button--primary" type="button">Stampa / Salva in PDF</button>
+              <button id="clear-button" class="button button--ghost" type="button">Svuota elenco</button>
+            </div>
+
+            <div class="helper-card">
+              <h3>Come usarlo</h3>
+              <ul class="feature-list">
+                <li>Carica una o più immagini</li>
+                <li>Riordina con drag & drop o con i pulsanti</li>
+                <li>Scegli il layout di pagina</li>
+                <li>Apri la stampa del browser per generare il PDF</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="panel image-list-panel">
+            <div class="panel__header">
+              <h2>Elenco immagini</h2>
+              <p>Trascina le card per cambiare l'ordine di stampa.</p>
+            </div>
+            <div id="image-list" class="image-list" aria-live="polite"></div>
+          </div>
+        </aside>
+
+        <section class="tool-preview">
+          <div class="preview-head">
+            <div>
+              <h2>Anteprima stampabile</h2>
+              <p>Ogni pagina viene preparata in base alle opzioni selezionate.</p>
+            </div>
+            <p id="preview-summary" class="preview-summary">Nessuna immagine caricata.</p>
+          </div>
+
+          <div id="print-preview" class="print-preview" aria-live="polite"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div data-site-shell="footer"></div>
+</body>
+</html>
