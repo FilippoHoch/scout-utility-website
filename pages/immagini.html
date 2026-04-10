@@ -48,7 +48,8 @@ body {
   gap: 16px;
   border-bottom: 3px solid var(--giallo);
   position: relative;
-  overflow: hidden;
+  z-index: 40;
+  overflow: visible;
 }
 .header::after {
   content: '';
@@ -131,7 +132,7 @@ body {
   box-shadow: 0 12px 28px rgba(0,0,0,0.14);
   display: grid;
   gap: 6px;
-  z-index: 20;
+  z-index: 60;
 }
 .header-menu-item {
   display: inline-flex;
