@@ -1,20 +1,22 @@
 # Scout Utility Website
 
-Scout Utility Website è una raccolta di utility web statiche pensate per attività scout, con una prima base concreta pronta da aprire in locale e da estendere nel tempo.
+Scout Utility Website è una raccolta di utility web statiche pensate per attività scout, pronta da aprire in locale e da estendere nel tempo.
 
 ## Obiettivo
 
 Costruire un sito semplice, ordinato, responsive e facilmente mantenibile che raccolga strumenti utili per staff, capi e organizzazione pratica di attività, uscite e campi.
 
-La prima utility già funzionante è `Sistemazione immagini`, pensata per:
+La prima utility già funzionante è `Immagini`.
 
-- caricare immagini dal computer
-- riordinarle
-- rimuoverle singolarmente
-- scegliere un layout essenziale di stampa
-- stampare o salvare in PDF con il browser
+Questa prima utility è pensata per:
 
-Le altre pagine sono state predisposte come placeholder curati, gia coerenti con la struttura del progetto e pronti a ricevere funzionalita future.
+- lavorare su PDF e fotografie in locale
+- comprimere documenti PDF
+- comprimere immagini in JPG
+- ritagliare fotografie prima dell'esportazione
+- salvare i file finali dal browser
+
+Le altre pagine sono presenti come base per sviluppi futuri, ma al momento restano non attive nell'interfaccia.
 
 ## Tecnologie
 
@@ -41,42 +43,28 @@ scout-utility-website/
     ├── immagini.html
     ├── libretti.html
     ├── menu.html
-    ├── prepare.html
     └── programmi.html
 ```
 
 ## Cosa include questa prima versione
 
-- Homepage con descrizione del progetto, navigazione chiara, card alle utility e sezione sviluppi futuri
-- Header e menu presenti su tutte le pagine
+- Homepage essenziale con accesso diretto allo strumento attivo
+- Header con menu compatto e scalabile
 - Footer condiviso
-- Utility immagini utilizzabile in locale
-- Pagine placeholder curate per gli sviluppi successivi
+- Utility immagini direttamente disponibile nella pagina dedicata
+- Pagine predisposte per strumenti futuri, non ancora abilitate dall'interfaccia
 
 ## Come aprire il progetto in locale
 
 1. Apri la cartella `scout-utility-website`.
 2. Avvia il file `index.html` nel browser.
-3. Dalla homepage entra nella pagina `Sistemazione immagini`.
+3. Dalla homepage entra nella pagina `Immagini`.
 
 Il progetto è statico, quindi può essere aperto direttamente dal file system senza build e senza installazioni.
 
-## Pubblicazione futura su GitHub Pages
-
-Quando vorrai pubblicarlo:
-
-1. Crea un repository GitHub chiamato `scout-utility-website`.
-2. Inizializza o collega il repository locale.
-3. Esegui il push del branch principale su GitHub.
-4. Nelle impostazioni del repository abilita GitHub Pages.
-5. Seleziona la pubblicazione dal branch principale e dalla root del progetto.
-
-Dato che il sito usa solo file statici, la struttura corrente è già adatta a GitHub Pages.
-
 ## TODO / Roadmap
 
-- Miglioramento dello strumento sistemazione immagini
-- Pagina Prepare
+- Miglioramento dello strumento immagini
 - Pagina Menu
 - Pagina Programmi campi / uscite
 - Pagina per sistemare e impaginare foglietti

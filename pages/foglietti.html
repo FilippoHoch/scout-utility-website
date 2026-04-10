@@ -6,56 +6,94 @@
   <meta name="description" content="Sezione Foglietti per sistemare e impaginare materiali stampabili.">
   <title>Foglietti | Scout Utility Website</title>
   <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="../assets/js/main.js" defer></script>
 </head>
 <body data-base-path="../" data-current-page="foglietti">
   <div data-site-shell="header"></div>
 
   <main>
-    <section class="page-hero page-hero--compact">
+    <section class="section section--hero">
       <div class="container">
-        <p class="eyebrow">Sezione in sviluppo</p>
-        <h1>Foglietti</h1>
-        <p class="hero-lead">
-          Pagina dedicata alla sistemazione e impaginazione di foglietti, schede brevi e materiali
-          da distribuire in forma ordinata.
-        </p>
+        <article class="hero-card reveal-card">
+          <p class="eyebrow">Sezione in sviluppo</p>
+          <div class="hero-title-row">
+            <span class="icon-badge icon-badge--blue">
+              <i data-lucide="files"></i>
+            </span>
+            <div>
+              <h1>Foglietti</h1>
+              <p class="hero-lead">
+                Pagina dedicata alla sistemazione e impaginazione di foglietti, schede brevi e materiali
+                piccoli da distribuire in forma ordinata.
+              </p>
+            </div>
+          </div>
+
+          <div class="inline-pills">
+            <span class="target-pill"><i data-lucide="file-text"></i>Contenuti brevi</span>
+            <span class="target-pill"><i data-lucide="layout-panel-top"></i>Layout di stampa</span>
+            <span class="target-pill"><i data-lucide="scissors-line-dashed"></i>Preparazione distribuzione</span>
+          </div>
+        </article>
       </div>
     </section>
 
     <section class="section section--tight">
       <div class="container placeholder-layout">
-        <article class="panel">
+        <article class="panel reveal-card">
           <div class="panel__header">
-            <h2>Scopo della sezione</h2>
+            <span class="icon-badge icon-badge--gold">
+              <i data-lucide="target"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Scopo della sezione</h2>
+              <p>Uniformare foglietti e materiali brevi da stampare.</p>
+            </div>
           </div>
           <p>
-            Questa sezione potrà ospitare strumenti per uniformare testi brevi, contenuti stampabili,
-            schede di gioco, preghiere, canti o comunicazioni da consegnare ai ragazzi.
+            Qui potranno trovare posto strumenti per sistemare schede di gioco, canti, preghiere,
+            comunicazioni o testi brevi da consegnare con un'impaginazione più ordinata.
           </p>
         </article>
 
-        <article class="panel">
+        <article class="panel reveal-card">
           <div class="panel__header">
-            <h2>Funzionalità previste</h2>
+            <span class="icon-badge icon-badge--green">
+              <i data-lucide="list-checks"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Funzionalità previste</h2>
+              <p>Strumenti vicini per logica all'area immagini.</p>
+            </div>
           </div>
           <ul class="feature-list">
             <li>Layout rapidi per foglietti in diversi formati</li>
             <li>Impaginazione di contenuti ripetuti o multipli</li>
             <li>Controllo margini e spaziatura per la stampa</li>
-            <li>Preparazione PDF più ordinata per la distribuzione</li>
+            <li>Preparazione PDF ordinata per la distribuzione</li>
           </ul>
         </article>
 
-        <article class="panel panel--notice">
+        <article class="panel panel--notice reveal-card">
           <div class="panel__header">
-            <h2>Stato attuale</h2>
+            <span class="icon-badge icon-badge--brown">
+              <i data-lucide="hammer"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Stato attuale</h2>
+              <p>Placeholder solido, già coerente con il resto del progetto.</p>
+            </div>
           </div>
           <p class="status-inline">In sviluppo</p>
           <p>
-            La pagina è già pronta come base e sarà un'evoluzione naturale dello strumento immagini,
-            con una logica simile ma centrata su contenuti testuali e stampati.
+            La pagina è pronta come contenitore iniziale e potrà evolvere naturalmente a partire dalle
+            logiche di impaginazione che oggi sono già presenti nella sezione immagini.
           </p>
         </article>
       </div>

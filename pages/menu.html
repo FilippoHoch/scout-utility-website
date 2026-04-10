@@ -6,39 +6,71 @@
   <meta name="description" content="Sezione Menu per pianificare pasti, quantità e organizzazione cambusa.">
   <title>Menu | Scout Utility Website</title>
   <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="../assets/js/main.js" defer></script>
 </head>
 <body data-base-path="../" data-current-page="menu">
   <div data-site-shell="header"></div>
 
   <main>
-    <section class="page-hero page-hero--compact">
+    <section class="section section--hero">
       <div class="container">
-        <p class="eyebrow">Sezione in sviluppo</p>
-        <h1>Menu</h1>
-        <p class="hero-lead">
-          Una pagina pensata per pianificare menu, pasti, quantità, ruoli e organizzazione della
-          cambusa in modo più ordinato e leggibile.
-        </p>
+        <article class="hero-card reveal-card">
+          <p class="eyebrow">Sezione in sviluppo</p>
+          <div class="hero-title-row">
+            <span class="icon-badge icon-badge--gold">
+              <i data-lucide="utensils-crossed"></i>
+            </span>
+            <div>
+              <h1>Menu</h1>
+              <p class="hero-lead">
+                Una sezione pensata per pianificare pasti, quantità, ingredienti, turni cucina e
+                organizzazione della cambusa con maggiore ordine.
+              </p>
+            </div>
+          </div>
+
+          <div class="inline-pills">
+            <span class="target-pill"><i data-lucide="cooking-pot"></i>Pasti e ricette</span>
+            <span class="target-pill"><i data-lucide="shopping-cart"></i>Spesa e quantità</span>
+            <span class="target-pill"><i data-lucide="chef-hat"></i>Turni cucina</span>
+          </div>
+        </article>
       </div>
     </section>
 
     <section class="section section--tight">
       <div class="container placeholder-layout">
-        <article class="panel">
+        <article class="panel reveal-card">
           <div class="panel__header">
-            <h2>Scopo della sezione</h2>
+            <span class="icon-badge icon-badge--green">
+              <i data-lucide="target"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Scopo della sezione</h2>
+              <p>Organizzare meglio la parte alimentare del campo o dell'uscita.</p>
+            </div>
           </div>
           <p>
             Qui potranno trovare posto strumenti per distribuire i pasti nel tempo, stimare dosi,
-            preparare liste della spesa e gestire aspetti pratici di cucina e cambusa.
+            preparare liste della spesa e tenere insieme la parte pratica della cambusa.
           </p>
         </article>
 
-        <article class="panel">
+        <article class="panel reveal-card">
           <div class="panel__header">
-            <h2>Funzionalità previste</h2>
+            <span class="icon-badge icon-badge--blue">
+              <i data-lucide="list-checks"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Funzionalità previste</h2>
+              <p>Prime idee già coerenti con la struttura del sito.</p>
+            </div>
           </div>
           <ul class="feature-list">
             <li>Pianificatore pasti per campo o uscita</li>
@@ -48,14 +80,20 @@
           </ul>
         </article>
 
-        <article class="panel panel--notice">
+        <article class="panel panel--notice reveal-card">
           <div class="panel__header">
-            <h2>Stato attuale</h2>
+            <span class="icon-badge icon-badge--brown">
+              <i data-lucide="hammer"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Stato attuale</h2>
+              <p>Placeholder curato, pronto per sviluppo successivo.</p>
+            </div>
           </div>
           <p class="status-inline">In sviluppo</p>
           <p>
-            La pagina è già pronta come base progettuale e mantiene lo stesso schema del resto del
-            sito, così da rendere semplice l'aggiunta delle prime utility concrete.
+            La sezione è già collocata nel posto giusto, con contenuti introduttivi chiari e uno stile
+            coordinato con il resto del progetto e con il tool AGESCI integrato.
           </p>
         </article>
       </div>

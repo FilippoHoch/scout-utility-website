@@ -6,39 +6,71 @@
   <meta name="description" content="Sezione Programmi per organizzare campi, uscite e attività scout.">
   <title>Programmi campi / uscite | Scout Utility Website</title>
   <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="../assets/js/main.js" defer></script>
 </head>
 <body data-base-path="../" data-current-page="programmi">
   <div data-site-shell="header"></div>
 
   <main>
-    <section class="page-hero page-hero--compact">
+    <section class="section section--hero">
       <div class="container">
-        <p class="eyebrow">Sezione in sviluppo</p>
-        <h1>Programmi campi / uscite</h1>
-        <p class="hero-lead">
-          Area pensata per creare, ordinare e tenere sotto controllo programmi giornalieri,
-          scansioni orarie, incarichi e note operative.
-        </p>
+        <article class="hero-card reveal-card">
+          <p class="eyebrow">Sezione in sviluppo</p>
+          <div class="hero-title-row">
+            <span class="icon-badge icon-badge--brown">
+              <i data-lucide="calendar-range"></i>
+            </span>
+            <div>
+              <h1>Programmi campi / uscite</h1>
+              <p class="hero-lead">
+                Area pensata per creare, ordinare e rendere leggibili programmi giornalieri, scansioni
+                orarie, incarichi e note operative.
+              </p>
+            </div>
+          </div>
+
+          <div class="inline-pills">
+            <span class="target-pill"><i data-lucide="clock-3"></i>Blocchi orari</span>
+            <span class="target-pill"><i data-lucide="users-round"></i>Responsabili e incarichi</span>
+            <span class="target-pill"><i data-lucide="printer"></i>Versione stampabile</span>
+          </div>
+        </article>
       </div>
     </section>
 
     <section class="section section--tight">
       <div class="container placeholder-layout">
-        <article class="panel">
+        <article class="panel reveal-card">
           <div class="panel__header">
-            <h2>Scopo della sezione</h2>
+            <span class="icon-badge icon-badge--gold">
+              <i data-lucide="target"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Scopo della sezione</h2>
+              <p>Costruire programmi chiari, ordinati e aggiornabili.</p>
+            </div>
           </div>
           <p>
-            L'obiettivo è offrire strumenti pratici per costruire programmi di campo, uscite o
-            attività ordinarie, mantenendo tempi, responsabili e contenuti ben leggibili.
+            L'obiettivo è offrire strumenti pratici per preparare programmi di campo, uscite o attività
+            ordinarie, mantenendo tempi, responsabilità e contenuti sempre ben leggibili.
           </p>
         </article>
 
-        <article class="panel">
+        <article class="panel reveal-card">
           <div class="panel__header">
-            <h2>Funzionalità previste</h2>
+            <span class="icon-badge icon-badge--blue">
+              <i data-lucide="list-checks"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Funzionalità previste</h2>
+              <p>Base già pensata per sviluppi progressivi.</p>
+            </div>
           </div>
           <ul class="feature-list">
             <li>Editor per programma giornaliero</li>
@@ -48,14 +80,20 @@
           </ul>
         </article>
 
-        <article class="panel panel--notice">
+        <article class="panel panel--notice reveal-card">
           <div class="panel__header">
-            <h2>Stato attuale</h2>
+            <span class="icon-badge icon-badge--green">
+              <i data-lucide="hammer"></i>
+            </span>
+            <div>
+              <h2 class="panel-title">Stato attuale</h2>
+              <p>Sezione già posizionata correttamente nel flusso del sito.</p>
+            </div>
           </div>
           <p class="status-inline">In sviluppo</p>
           <p>
-            Per ora la sezione definisce il perimetro funzionale e mantiene una base chiara per
-            uno sviluppo progressivo, senza dover ripensare struttura e navigazione.
+            Per ora la pagina definisce bene il perimetro funzionale e mantiene uno schema coerente,
+            pronto ad accogliere in seguito editor, viste e modelli stampabili.
           </p>
         </article>
       </div>

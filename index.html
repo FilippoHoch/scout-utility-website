@@ -3,163 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Scout Utility Website: raccolta di strumenti semplici e pratici per attività, campi e uscite scout.">
+  <meta name="description" content="Scout Utility Website: raccolta di strumenti pratici per attività scout.">
   <title>Scout Utility Website</title>
   <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body data-base-path="./" data-current-page="home">
   <div data-site-shell="header"></div>
 
   <main>
-    <section class="page-hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Raccolta di strumenti per capi e staff</p>
-          <h1>Scout Utility Website</h1>
-          <p class="hero-lead">
-            Una base web leggera e facilmente estendibile per organizzare materiali utili
-            nella vita di reparto, di branco, di cerchio e nei campi.
-          </p>
-          <p>
-            Il primo modulo attivo è dedicato alla sistemazione di immagini per la stampa o il
-            salvataggio in PDF. Le altre sezioni sono già predisposte per crescere in modo ordinato.
-          </p>
-          <div class="hero-actions">
-            <a class="button button--primary" href="pages/immagini.html">Apri la utility immagini</a>
-            <a class="button button--ghost" href="#sviluppi-futuri">Vedi la roadmap</a>
+    <section class="section section--hero">
+      <div class="container">
+        <article class="hero-card reveal-card">
+          <p class="eyebrow">Scout Utility Website</p>
+          <div class="hero-title-row">
+            <span class="icon-badge icon-badge--gold">
+              <i data-lucide="compass"></i>
+            </span>
+            <div>
+              <h1>Strumenti utili per attività scout</h1>
+              <p class="hero-lead">
+                Una raccolta semplice e ordinata di utility da usare in locale. Al momento è
+                disponibile la sezione immagini.
+              </p>
+            </div>
           </div>
-        </div>
 
-        <aside class="hero-panel">
-          <h2>Pronto a crescere</h2>
-          <ul class="feature-list">
-            <li>Solo HTML, CSS e JavaScript vanilla</li>
-            <li>Struttura pensata per manutenzione semplice</li>
-            <li>Interfaccia in italiano e mobile-friendly</li>
-            <li>Compatibile con futura pubblicazione su GitHub Pages</li>
-          </ul>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="eyebrow">Utility disponibili</p>
-          <h2>Strumenti già presenti nel progetto</h2>
-          <p>
-            Ogni sezione è organizzata come pagina autonoma, con un linguaggio semplice e una
-            struttura coerente, così da poter aggiungere funzionalità senza rifare il sito da capo.
-          </p>
-        </div>
-
-        <div class="utility-grid">
-          <article class="utility-card utility-card--active">
-            <span class="status-badge status-badge--live">Disponibile</span>
-            <h3>Sistemazione immagini</h3>
-            <p>
-              Carica immagini dal computer, riordinale, scegli un layout essenziale e prepara
-              pagine stampabili o salvabili in PDF direttamente dal browser.
-            </p>
-            <a class="text-link" href="pages/immagini.html">Apri lo strumento</a>
-          </article>
-
-          <article class="utility-card">
-            <span class="status-badge">In sviluppo</span>
-            <h3>Prepare</h3>
-            <p>Spazio per strumenti di preparazione attività, incontri, checklist e materiali.</p>
-            <a class="text-link" href="pages/prepare.html">Vai alla sezione</a>
-          </article>
-
-          <article class="utility-card">
-            <span class="status-badge">In sviluppo</span>
-            <h3>Menu</h3>
-            <p>Pianificazione di pasti, quantità, turni cambusa e organizzazione della spesa.</p>
-            <a class="text-link" href="pages/menu.html">Vai alla sezione</a>
-          </article>
-
-          <article class="utility-card">
-            <span class="status-badge">In sviluppo</span>
-            <h3>Programmi campi / uscite</h3>
-            <p>Supporto alla costruzione di programmi giornalieri, tempi, incarichi e note.</p>
-            <a class="text-link" href="pages/programmi.html">Vai alla sezione</a>
-          </article>
-
-          <article class="utility-card">
-            <span class="status-badge">In sviluppo</span>
-            <h3>Foglietti</h3>
-            <p>Area dedicata alla sistemazione e impaginazione di foglietti e materiali stampati.</p>
-            <a class="text-link" href="pages/foglietti.html">Vai alla sezione</a>
-          </article>
-
-          <article class="utility-card">
-            <span class="status-badge">In sviluppo</span>
-            <h3>Impaginatore libretti campi estivi</h3>
-            <p>Base pronta per un futuro strumento dedicato a libretti, fascicoli e raccolte.</p>
-            <a class="text-link" href="pages/libretti.html">Vai alla sezione</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--muted">
-      <div class="container split-panel">
-        <article class="info-card">
-          <p class="eyebrow">Approccio</p>
-          <h2>Una base concreta, non un mockup</h2>
-          <p>
-            Il progetto nasce come raccolta di utility realmente utilizzabili in locale, con pagine
-            già strutturate e codice separato in modo chiaro tra markup, stile e logica.
-          </p>
-        </article>
-
-        <article class="info-card">
-          <p class="eyebrow">Primo passo utile</p>
-          <h2>Impaginazione immagini pronta all'uso</h2>
-          <p>
-            La pagina immagini è stata pensata per essere utile subito: carico i file, li riordino,
-            scelgo il formato della pagina e uso la stampa del browser per ottenere un PDF.
-          </p>
+          <div class="action-row">
+            <a class="btn btn-primary" href="pages/immagini.html">
+              <i data-lucide="images"></i>
+              <span>Apri Immagini</span>
+            </a>
+          </div>
         </article>
       </div>
     </section>
 
-    <section class="section" id="sviluppi-futuri">
-      <div class="container">
-        <div class="section-heading">
-          <p class="eyebrow">Sviluppi futuri</p>
-          <h2>Roadmap iniziale del progetto</h2>
+    <section class="section section--tight">
+      <div class="container utility-grid utility-grid--single">
+        <article class="utility-card reveal-card">
+          <div class="card-head">
+            <span class="icon-badge icon-badge--blue">
+              <i data-lucide="images"></i>
+            </span>
+            <div>
+              <h2 class="utility-title">Immagini</h2>
+              <p class="card-subtext">PDF e fotografie in un'unica pagina.</p>
+            </div>
+          </div>
           <p>
-            Le prossime iterazioni possono ampliare la raccolta senza cambiare la struttura generale.
+            Carica, comprimi, ritaglia e prepara rapidamente file utili per documenti e immagini.
           </p>
-        </div>
-
-        <div class="roadmap-grid">
-          <article class="roadmap-card">
-            <h3>TODO prioritari</h3>
-            <ul class="feature-list">
-              <li>Miglioramento dello strumento di sistemazione immagini</li>
-              <li>Pagina Prepare con strumenti per attività e materiali</li>
-              <li>Pagina Menu per pasti, quantità e cambusa</li>
-              <li>Pagina Programmi campi / uscite</li>
-              <li>Pagina per sistemare e impaginare foglietti</li>
-              <li>Impaginatore libretti campi estivi</li>
-            </ul>
-          </article>
-
-          <article class="roadmap-card">
-            <h3>Evoluzioni tecniche</h3>
-            <ul class="feature-list">
-              <li>Esportazione PDF più avanzata</li>
-              <li>Salvataggio locale delle impostazioni</li>
-              <li>Temi di stampa predefiniti</li>
-              <li>Template riutilizzabili per diversi tipi di materiale</li>
-              <li>Aggiunta di altre utility future</li>
-            </ul>
-          </article>
-        </div>
+          <a class="btn btn-secondary" href="pages/immagini.html">
+            <i data-lucide="arrow-right"></i>
+            <span>Apri lo strumento</span>
+          </a>
+        </article>
       </div>
     </section>
   </main>
