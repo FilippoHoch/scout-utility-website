@@ -19,20 +19,35 @@
 
   <main>
     <section class="section section--hero">
-      <div class="container">
+      <div class="container dashboard-grid">
         <article class="hero-card reveal-card">
-          <p class="eyebrow">Scout Utility Website</p>
-          <div class="hero-title-row">
+          <div class="hero-card__header">
             <span class="icon-badge icon-badge--gold">
               <i data-lucide="compass"></i>
             </span>
             <div>
-              <h1>Strumenti utili per attività scout</h1>
+              <p class="eyebrow">Scout Utility Website</p>
+              <h1>Strumenti pronti da usare in locale</h1>
               <p class="hero-lead">
-                Una raccolta semplice e ordinata di utility da usare in locale. Ora include la
-                sistemazione immagini e il nuovo tool per preparare foglietti A5 su fogli A4.
+                Una raccolta ordinata di utility pensate per preparare materiali scout in modo rapido,
+                con lo stesso stile visivo e senza passaggi inutili.
               </p>
             </div>
+          </div>
+
+          <div class="hero-highlights">
+            <span class="hero-pill">
+              <i data-lucide="monitor-check"></i>
+              <span>Uso immediato nel browser</span>
+            </span>
+            <span class="hero-pill">
+              <i data-lucide="printer"></i>
+              <span>Strumenti pensati per la stampa</span>
+            </span>
+            <span class="hero-pill">
+              <i data-lucide="folder-cog"></i>
+              <span>Base pronta per crescere</span>
+            </span>
           </div>
 
           <div class="action-row">
@@ -46,47 +61,93 @@
             </a>
           </div>
         </article>
+
+        <aside class="summary-card reveal-card">
+          <div class="summary-card__top">
+            <p class="summary-card__eyebrow">Disponibili ora</p>
+            <h2 class="summary-card__title">Workspace operativo</h2>
+          </div>
+
+          <div class="summary-list">
+            <div class="summary-row">
+              <span class="summary-row__icon icon-badge icon-badge--blue">
+                <i data-lucide="images"></i>
+              </span>
+              <div>
+                <strong>Immagini</strong>
+                <p>Compressione, ritaglio e sistemazione di PDF e fotografie.</p>
+              </div>
+            </div>
+            <div class="summary-row">
+              <span class="summary-row__icon icon-badge icon-badge--brown">
+                <i data-lucide="files"></i>
+              </span>
+              <div>
+                <strong>Foglietti</strong>
+                <p>Impaginazione A5 su A4, conteggio copie, PDF finale e stampa.</p>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
 
     <section class="section section--tight">
       <div class="container utility-grid utility-grid--double">
         <article class="utility-card reveal-card">
-          <div class="card-head">
-            <span class="icon-badge icon-badge--blue">
-              <i data-lucide="images"></i>
-            </span>
-            <div>
-              <h2 class="utility-title">Immagini</h2>
-              <p class="card-subtext">PDF e fotografie in un'unica pagina.</p>
+          <div class="utility-card__header">
+            <div class="card-head">
+              <span class="icon-badge icon-badge--blue">
+                <i data-lucide="images"></i>
+              </span>
+              <div>
+                <h2 class="utility-title">Immagini</h2>
+                <p class="card-subtext">PDF e fotografie in un'unica pagina.</p>
+              </div>
             </div>
           </div>
-          <p>
-            Carica, comprimi, ritaglia e prepara rapidamente file utili per documenti e immagini.
-          </p>
-          <a class="btn btn-secondary" href="pages/immagini.html">
-            <i data-lucide="arrow-right"></i>
-            <span>Apri lo strumento</span>
-          </a>
+          <div class="utility-card__body">
+            <p>
+              Carica, comprimi, ritaglia e prepara rapidamente file utili per documenti e immagini.
+            </p>
+            <div class="tool-tags">
+              <span class="tool-tag">PDF</span>
+              <span class="tool-tag">Immagini</span>
+              <span class="tool-tag">Esportazione rapida</span>
+            </div>
+            <a class="btn btn-secondary" href="pages/immagini.html">
+              <i data-lucide="arrow-right"></i>
+              <span>Apri lo strumento</span>
+            </a>
+          </div>
         </article>
 
         <article class="utility-card reveal-card">
-          <div class="card-head">
-            <span class="icon-badge icon-badge--brown">
-              <i data-lucide="files"></i>
-            </span>
-            <div>
-              <h2 class="utility-title">Foglietti</h2>
-              <p class="card-subtext">Impaginazione A5, copie, PDF e stampa.</p>
+          <div class="utility-card__header">
+            <div class="card-head">
+              <span class="icon-badge icon-badge--brown">
+                <i data-lucide="files"></i>
+              </span>
+              <div>
+                <h2 class="utility-title">Foglietti</h2>
+                <p class="card-subtext">Impaginazione A5, copie, PDF e stampa.</p>
+              </div>
             </div>
           </div>
-          <p>
-            Carica PDF, immagini o documenti Word, imposta fronte/retro e genera il PDF pronto da stampare.
-          </p>
-          <a class="btn btn-secondary" href="pages/foglietti.html">
-            <i data-lucide="arrow-right"></i>
-            <span>Apri lo strumento</span>
-          </a>
+          <div class="utility-card__body">
+            <p>
+              Carica PDF, immagini o documenti Word, imposta fronte/retro e genera il PDF pronto da stampare.
+            </p>
+            <div class="tool-tags">
+              <span class="tool-tag">PDF</span>
+              <span class="tool-tag">Word</span>
+              <span class="tool-tag">Stampa A5 su A4</span>
+            </div>
+            <a class="btn btn-secondary" href="pages/foglietti.html">
+              <i data-lucide="arrow-right"></i>
+              <span>Apri lo strumento</span>
+            </a>
+          </div>
         </article>
       </div>
     </section>
